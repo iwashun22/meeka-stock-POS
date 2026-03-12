@@ -1,17 +1,30 @@
 extends layout 
 
 block content
-  form(action="/product", method="POST")
+  form(action="/product", method="POST" class="search-form")
     div
-      label(for="id") Search Products:
-      input(type="text" name="id" autocomplete="off" required)
+      label(for="sku_id") Search Products:
+      input(type="text" id="sku_id" name="sku_id" autocomplete="off" required value=data ? data.sku_id : '')
     div
       button(type="submit") Search
 
-  if notFound 
+  if notFound
     p Product not found.
 
   if data
-    h2 #{data.name}
-    p price:  #{data.price} THB
-    p stock: #{data.count}
+    div
+      h2 #{data.name}
+      p price:  #{data.price} THB
+      p stock: #{data.count}
+
+    div
+      form(action="/update", method="POST")
+        input(type="hidden" name="id" value=data.id)
+        div
+          label(for="price") Update Price:
+          input(type="number" name="price" step="0.01" required)
+        div
+          label(for="count") Update Stock Count:
+          input(type="number" name="count" required)
+        div
+          button(type="submit") Update

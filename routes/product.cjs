@@ -2,13 +2,13 @@ const router = require('express').Router();
 const supabase = require('../util/supabase.cjs');
 
 router.post('/', (req, res) => {
-  const product_sku_id = req.body.id;
+  const product_sku_id = req.body.sku_id;
   res.redirect(`/product/${product_sku_id}`);
 })
 
-router.get('/:id', async (req, res) => {
-  const id = req.params.id;
-  const { data, error } = await supabase.from('stocks').select('*').eq('sku_id', id).single();
+router.get('/:sku_id', async (req, res) => {
+  const sku_id = req.params.sku_id;
+  const { data, error } = await supabase.from('stocks').select('*').eq('sku_id', sku_id).single();
   console.log(data);
 
   if (error) {
