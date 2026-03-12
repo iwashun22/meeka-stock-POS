@@ -1,0 +1,17 @@
+extends layout 
+
+block content
+  form(action="/product", method="POST")
+    div
+      label(for="id") Search Products:
+      input(type="text" name="id" autocomplete="off" required)
+    div
+      button(type="submit") Search
+
+  if notFound 
+    p Product not found.
+
+  if data
+    h2 #{data.name}
+    p price:  #{data.price} THB
+    p stock: #{data.count}

@@ -1,0 +1,18 @@
+{
+  "name": "meeka-stock-POS",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Shun Iwashita <iwashunabc519@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.99.1",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "passport": "^0.7.0",
+    "pug": "^3.0.3"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.1"
+  }
+}
