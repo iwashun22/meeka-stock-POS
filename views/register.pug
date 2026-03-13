@@ -4,17 +4,23 @@ block content
   h1(class="page-title") ลงทะเบียน
   form(class="registration-form" action="/register" method="POST")
     div
-      label(for="username") ชื่อผู้ใช้:
-      input(type="text" name="username" autocomplete="off" placeholder="username" required)
+      label(class="pp-bold" for="username") ชื่อผู้ใช้:
+      input(type="text" name="username" autocomplete="off" placeholder="username" value=previousInput.username required)
+      if error && error.on === 'username'
+        p(class="error-message") #{error.message}
     div
-      label(for="password") รหัสผ่าน:
+      label(class="pp-bold" for="password") รหัสผ่าน:
       div
-        input(type="password" name="password" autocomplete="off" placeholder="password" required)
+        input(type="password" name="password" autocomplete="off" placeholder="password" value=previousInput.password required)
         span(type="button" class="toggle-password")
+        if error && error.on === 'password'
+          p(class="error-message") #{error.message}
     div
-      label(for="confirmation") ยืนยันรหัสผ่าน:
+      label(class="pp-bold" for="confirmation") ยืนยันรหัสผ่าน:
       div
-        input(type="password" name="confirmation" autocomplete="off" placeholder="confirm password" required)
+        input(type="password" name="confirmation" autocomplete="off" placeholder="confirm password" value=previousInput.confirmation  required)
         span(type="button" class="toggle-password")
+      if error && error.on === 'confirmation'
+        p(class="error-message") #{error.message}
     div
-      button(class="form-submit" type="submit") Register
+      button(class="form-submit kn-bold" type="submit") ลงทะเบียน

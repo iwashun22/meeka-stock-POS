@@ -44,6 +44,11 @@ router.get('/', (req, res) => {
   if(req.isAuthenticated()) {
     return res.redirect('/');
   }
+
+  const hasReachedMaxLoginAttempts = req.session.loginAttempts >= 5;
+  if (hasReachedMaxLoginAttempts) {
+    return res.status(429).send('Too many login attempts. Please try again later.');
+  }
   res.render('login');
 });
 

@@ -78,6 +78,15 @@ body {
   border-radius: 4px;
   font-size: 18px;
 }
+.registration-form .error-message {
+  color: red;
+  font-size: 12px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform: translateX(10px);
+  white-space: nowrap;
+}
 .toggle-password {
   cursor: pointer;
   position: absolute;
@@ -91,7 +100,7 @@ body {
   width: 18px;
   height: 18px;
   display: block;
-  color: blue;
+  color: #333;
 }
 .form-submit {
   padding: 10px 20px;
