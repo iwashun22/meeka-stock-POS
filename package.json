@@ -4,15 +4,26 @@
   "main": "index.js",
   "author": "Shun Iwashita <iwashunabc519@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "bundle": "webpack",
+    "bundle-watch": "webpack --watch"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.1",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
+    "html5-qrcode": "^2.3.8",
     "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
     "pug": "^3.0.3"
   },
   "devDependencies": {
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "svg-inline-loader": "^0.8.2",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^6.0.1"
   }
 }

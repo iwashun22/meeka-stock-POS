@@ -1,13 +1,18 @@
 extends layout
 
 block content
-  h1 Login
-  form(action="/login" method="POST")
+  h1(class="page-title kn-bold") เข้าสู่ระบบ
+  form(class="registration-form" action="/login" method="POST")
     div
-      label(for="email") Email:
-      input(type="email" name="email" required)
+      label(for="username" class="pp-bold") ชื่อผู้ใช้:
+      input(type="text" name="username" autocomplete="off" placeholder="username" required)
     div
-      label(for="password") Password:
-      input(type="password" name="password" required)
+      label(for="password" class="pp-bold") รหัสผ่าน:
+      div
+        input(type="password" name="password" autocomplete="off" placeholder="password" required)
+        span(type="button" class="toggle-password")
     div
-      button(type="submit") Login
+      button(class="form-submit kn-bold" type="submit") ยืนยัน
+
+  div(class="bottom-link-container")
+    a(class="bottom-link kn-reg" href="/register") ไม่มีบัญชีผู้ใช้? ลงทะเบียนที่นี่.

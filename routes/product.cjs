@@ -9,7 +9,7 @@ router.post('/', (req, res) => {
 router.get('/:sku_id', async (req, res) => {
   const sku_id = req.params.sku_id;
   const { data, error } = await supabase.from('stocks').select('*').eq('sku_id', sku_id).single();
-  console.log(data);
+  // console.log(data);
 
   if (error) {
     if (error.code === 'PGRST116') {
@@ -19,7 +19,7 @@ router.get('/:sku_id', async (req, res) => {
     return res.status(500).send('Internal Server Error');
   }
 
-  res.render('search', { data: data });
+  res.render('search', { user: req.user, data: data });
 })
 
 module.exports = router;

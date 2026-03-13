@@ -3,8 +3,9 @@ extends layout
 block content
   form(action="/product", method="POST" class="search-form")
     div
-      label(for="sku_id") Search Products:
-      input(type="text" id="sku_id" name="sku_id" autocomplete="off" required value=data ? data.sku_id : '')
+      label(for="sku-id") Search Products:
+      input(type="text" id="sku-id" name="sku_id" autocomplete="off" required value=data ? data.sku_id : '')
+      div(id="scan-icon-container")
     div
       button(type="submit") Search
 
@@ -18,7 +19,9 @@ block content
       p stock: #{data.count}
 
     div
-      form(action="/update", method="POST")
+      a(href=`/update/${data.sku_id}`)
+        button Update Product
+      //- form(action="/update", method="POST")
         input(type="hidden" name="id" value=data.id)
         div
           label(for="price") Update Price:

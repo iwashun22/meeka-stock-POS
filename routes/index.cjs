@@ -1,7 +1,8 @@
 const router = require('express').Router();
 
 router.get('/', (req, res) => {
-  res.render('search');
+  // console.log(req.user);
+  res.render('search', { user: req.user });
 });
 
 module.exports = router;

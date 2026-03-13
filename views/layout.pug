@@ -1,9 +1,27 @@
 doctype html
-html(lang="en")
+html(lang="th")
   head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Meeka Stock POS
+    title แม่ข่าพาร์ต POS
     link(rel="stylesheet", href="/css/style.css")
+    link(rel="stylesheet", href="/css/loadfonts.css")
+    script(src="/dist/bundle.js" defer)
   body
+    div(class="topbar")
+      a(href="/" class="nav-link home-link")
+        button(class="kn-reg") หน้าแรก
+      if user
+        a(href="/logout" class="nav-link") 
+          button(class="kn-reg") ออกจากระบบ
+      else
+        a(href="/login" class="nav-link")
+          button(class="kn-reg") เข้าสู่ระบบ
+        a(href="/register" class="nav-link")
+          button(class="kn-reg") ลงทะเบียน
+    div(id="qr-reader")
+      div(id="render")
+      div(class="close-btn-container")
+        button(id="close-qr-btn") ยกเลิก
+
     block content

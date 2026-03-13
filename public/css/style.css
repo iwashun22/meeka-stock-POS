@@ -9,3 +9,116 @@ body {
   background-color: #f4f4f4;
   color: #333;
 }
+
+.topbar {
+  display: flex;
+  width: 100%;
+  height: 60px;
+}
+.topbar .nav-link {
+  display: inline-block;
+  height: 100%;
+}
+.topbar .nav-link.home-link {
+  margin-right: auto;
+}
+.topbar .nav-link button {
+  height: 100%;
+  padding: 0 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-size: 18px;
+}
+.topbar .nav-link button:hover {
+  background-color: #aaa;
+}
+
+.page-title {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 26px;
+}
+
+#scan-icon-container {
+  cursor: pointer;
+}
+
+#qr-reader {
+  width: 80vw;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  background-color: #eee;
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+}
+.registration-form div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+}
+.registration-form label {
+  font-size: 14px;
+}
+.registration-form input {
+  padding: 8px;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 18px;
+}
+.toggle-password {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-block;
+  line-height: 0;
+}
+.toggle-password-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  color: blue;
+}
+.form-submit {
+  padding: 10px 20px;
+  background-color: #4F39F6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.form-submit:hover {
+  background-color: #432DD7;
+}
+
+.bottom-link-container {
+  text-align: center;
+  margin-top: 40px;
+}
+a.bottom-link {
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #193CB8;
+}
+a.bottom-link:visited {
+  color: #193CB8;
+}
+a.bottom-link:hover {
+  text-decoration: underline;
+  color: #162456;
+}
