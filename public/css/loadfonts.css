@@ -1,0 +1,52 @@
+
+@font-face {
+  font-family: 'Kanit-Regular';
+  src: url('/fonts/Kanit/Kanit-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Kanit-Light';
+  src: url('/fonts/Kanit/Kanit-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Kanit-Bold';
+  src: url('/fonts/Kanit/Kanit-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'Playpen';
+  src: url('/fonts/Playpen/PlaypenSansThai-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+}
+
+
+.kn-light {
+  font-family: 'Kanit-Light', sans-serif;
+  font-weight: 300;
+}
+.kn-reg {
+  font-family: 'Kanit-Regular', sans-serif;
+}
+.kn-bold {
+  font-family: 'Kanit-Bold', sans-serif;
+  font-weight: bold;
+}
+
+.pp-light {
+  font-family: 'Playpen', sans-serif;
+  font-weight: 300;
+}
+.pp-reg {
+  font-family: 'Playpen', sans-serif;
+  font-weight: 400;
+}
+.pp-bold {
+  font-family: 'Playpen', sans-serif;
+  font-weight: 700;
+}

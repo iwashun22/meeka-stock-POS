@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1(class="page-title") ลงทะเบียน
+  form(class="registration-form" action="/register" method="POST")
+    div
+      label(for="username") ชื่อผู้ใช้:
+      input(type="text" name="username" autocomplete="off" placeholder="username" required)
+    div
+      label(for="password") รหัสผ่าน:
+      div
+        input(type="password" name="password" autocomplete="off" placeholder="password" required)
+        span(type="button" class="toggle-password")
+    div
+      label(for="confirmation") ยืนยันรหัสผ่าน:
+      div
+        input(type="password" name="confirmation" autocomplete="off" placeholder="confirm password" required)
+        span(type="button" class="toggle-password")
+    div
+      button(class="form-submit" type="submit") Register
