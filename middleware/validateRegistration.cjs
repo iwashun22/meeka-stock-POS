@@ -40,7 +40,7 @@ async function validateRegistration(req, res, next) {
     });
   }
 
-  next(req, res);
+  next();
 }
 
 module.exports = validateRegistration;

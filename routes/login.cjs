@@ -5,7 +5,7 @@ const supabase = require('../util/supabase.cjs');
 const bcrypt = require('bcrypt');
 const { rateLimit } = require('express-rate-limit');
 
-const limiter = rateLimit({
+const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5,
   message: 'มีการพยายามเข้าสู่ระบบมากเกินไป กรุณาลองใหม่อีกครั้งในภายหลัง',
@@ -56,7 +56,7 @@ router.get('/', (req, res) => {
   res.render('login', { error: null, previousInput: {} });
 });
 
-router.post('/', limiter, (req, res, next) => {
+router.post('/', loginLimiter, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) return next(err);
 
