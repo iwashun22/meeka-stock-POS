@@ -58,14 +58,18 @@ body {
 .registration-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  /* gap: 15px; */
   align-items: center;
   justify-content: center;
 }
-.registration-form div {
+.registration-form .form-group {
   display: flex;
+  margin-top: 10px;
   flex-direction: column;
   gap: 5px;
+  position: relative;
+}
+.registration-form .password-container {
   position: relative;
 }
 .registration-form label {
@@ -81,11 +85,15 @@ body {
 .registration-form .error-message {
   color: red;
   font-size: 12px;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  transform: translateX(10px);
-  white-space: nowrap;
+  width: 250px;
+  max-width: 250px;
+  padding-left: 5px;
+  text-align: start;
+  /* position: absolute; */
+  /* top: 100%; */
+  /* left: 50%; */
+  /* transform: translateX(-50%); */
+  /* white-space: nowrap; */
 }
 .toggle-password {
   cursor: pointer;

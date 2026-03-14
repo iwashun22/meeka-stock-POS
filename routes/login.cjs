@@ -3,6 +3,13 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const supabase = require('../util/supabase.cjs');
 const bcrypt = require('bcrypt');
+const { rateLimit } = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5,
+  message: 'มีการพยายามเข้าสู่ระบบมากเกินไป กรุณาลองใหม่อีกครั้งในภายหลัง',
+})
 
 passport.use(new LocalStrategy(async (username, password, done) => {
   const { data, error } = await supabase
@@ -11,13 +18,14 @@ passport.use(new LocalStrategy(async (username, password, done) => {
     .eq('username', username)
     .single();
 
+  const previousInput = { username, password }
   if (error || !data) {
-    return done(null, false, { message: 'Invalid username or password' });
+    return done(null, false, { message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', previousInput });
   }
 
   const isValid = await bcrypt.compare(password, data.hashed_password);
   if (!isValid) {
-    return done(null, false, { message: 'Invalid username or password' });
+    return done(null, false, { message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', previousInput });
   }
 
   done(null, data);
@@ -45,19 +53,28 @@ router.get('/', (req, res) => {
     return res.redirect('/');
   }
 
-  const hasReachedMaxLoginAttempts = req.session.loginAttempts >= 5;
-  if (hasReachedMaxLoginAttempts) {
-    return res.status(429).send('Too many login attempts. Please try again later.');
-  }
-  res.render('login');
+  res.render('login', { error: null, previousInput: {} });
 });
 
-router.post('/', passport.authenticate('local', {
-  failureRedirect: '/login',
-}), (req, res) => {
-  const returnTo = req.cookies.returnTo || '/';
-  res.clearCookie('returnTo');
-  res.redirect(returnTo);
-});
+router.post('/', limiter, (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err);
+
+    if (!user) {
+      return res.status(401).render('login', { 
+        error: { message: info.message },
+        previousInput: info.previousInput || {}
+      });
+    }
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+
+      const returnTo = req.cookies.returnTo || '/';
+      res.clearCookie('returnTo');
+      return res.redirect(returnTo);
+    });
+  })(req, res, next);
+}); 
 
 module.exports = router;
