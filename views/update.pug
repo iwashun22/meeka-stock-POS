@@ -1,5 +1,25 @@
 extends layout
 
 block content
-  h1 Update Product
-  p This is the update page for product with ID: #{id}
+  h1(class="page-title kn-bold") อัปเดตสินค้า
+
+  table(class="product-table")
+    tr
+      th รหัสสินค้า
+      td #{data.sku_id}
+    tr
+      th ชื่อสินค้า
+      td #{data.name}
+    tr
+      th จำนวน
+      td #{data.count}
+    tr
+      th ราคา
+      td #{data.price}
+
+  p(class="updated-at") อัปเดตเมื่อ: #{data.updated_at}
+
+  if notPermitted
+    p(class="not-permitted") คุณไม่มีสิทธิ์ในการอัปเดตข้อมูลสินค้า หากเป็นพนักงานกรุณาแจ้งเพื่อขอสิทธิ์
+  else
+    p You have permission to update this product.

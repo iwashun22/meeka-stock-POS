@@ -3,15 +3,17 @@ const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+const helmet = require('helmet');
 const dotenv = require('dotenv');
 
 dotenv.config();
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static('public', { maxAge: '1d' }));
 app.use(morgan('dev'));
 app.use(cookieParser());
+app.use(helmet());
 app.use(session({
   secret: process.env.SESSION_SECRET || 'hiding cat',
   resave: false,

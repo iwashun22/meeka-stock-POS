@@ -1,25 +1,19 @@
 const router = require('express').Router();
-const supabase = require('../util/supabase.cjs');
+const getProductData = require('../middleware/getProductData.cjs');
 
 router.post('/', (req, res) => {
   const product_sku_id = req.body.sku_id;
   res.redirect(`/product/${product_sku_id}`);
 })
 
-router.get('/:sku_id', async (req, res) => {
-  const sku_id = req.params.sku_id;
-  const { data, error } = await supabase.from('stocks').select('*').eq('sku_id', sku_id).single();
-  // console.log(data);
+router.get('/:id', getProductData, (req, res) => {
+  const { productData } = req;
 
-  if (error) {
-    if (error.code === 'PGRST116') {
-      return res.status(404).render('search', { data: null, notFound: true });
-    }
-    console.error('Error fetching product:', error);
-    return res.status(500).send('Internal Server Error');
+  if (!productData) {
+    return res.status(404).render('search', { data: null, notFound: true });
   }
 
-  res.render('search', { user: req.user, data: data });
+  res.render('search', { user: req.user, data: productData });
 })
 
 module.exports = router;
