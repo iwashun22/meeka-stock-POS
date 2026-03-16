@@ -14,7 +14,7 @@ const loginLimiter = rateLimit({
 passport.use(new LocalStrategy(async (username, password, done) => {
   const { data, error } = await supabase
     .from('users')
-    .select('*')
+    .select('*, roles(*)')
     .eq('username', username)
     .single();
 
@@ -37,7 +37,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   const { data, error } = await supabase
     .from('users')
-    .select('*')
+    .select('*, roles(*)')
     .eq('id', id)
     .single();
 

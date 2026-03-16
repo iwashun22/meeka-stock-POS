@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   background-color: #f4f4f4;
   color: #333;
 }
@@ -53,6 +53,19 @@ body {
   transform: translate(-50%, -50%);
   display: none;
   background-color: #eee;
+}
+#add-product-btn {
+  padding: 14px;
+  border-radius: 50%;
+  border: none;
+  line-height: 0;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #2ecc71;
+}
+#add-product-btn:hover {
+  background-color: #27ae60;
 }
 
 .registration-form {
@@ -139,3 +152,111 @@ a.bottom-link:hover {
   text-decoration: underline;
   color: #162456;
 }
+
+
+.product-table {
+  width: 90%;
+  max-width: 800px;
+  margin: auto;
+}
+.product-table tr:nth-child(odd) {
+  background-color: #dddee0;
+}
+.product-table th {
+  font-weight: bold;
+  font-size: 14px;
+  padding: 10px;
+}
+.product-table td {
+  padding: 10px 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+.product-table tr {
+  font-weight: 400;
+}
+.product-table .name-row td {
+  font-size: 20px;
+}
+
+.updated-at {
+  font-size: 14px;
+  color: #666;
+  padding: 10px;
+  text-align: right;
+  width: 90%;
+  max-width: 800px;
+  border-top: 1px solid #ccc;
+  margin: auto;
+}
+.not-permitted {
+  margin-top: 50px;
+  color: #CF3115;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* update.pug */
+.action-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 15px;
+}
+#sell-stock-btn, #add-stock-btn {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+#sell-stock-btn { background-color: #FEE7E7; color: #9C0707; }
+#add-stock-btn { background-color: #E7F8FE; color: #073B9C; }
+#sell-stock-btn:hover { background-color: #F86363; }
+#add-stock-btn:hover { background-color: #6397F8; }
+#update-stock-form {
+  display: none;
+}
+
+#result-table, #result-table input {
+  text-align: right;
+}
+#result-table td, #result-table tr {
+  padding: 5px;
+}
+#result-table th {
+  padding-right: 20px;
+}
+#table-data-final-quantity {
+  font-weight: bold;
+}
+#result-table.sell #table-data-final-quantity { color: #C80909; }
+#result-table.add #table-data-final-quantity { color: #079C2F; }
+
+#update-quantity {
+  padding: 4px 8px;
+  font-size: 18px;
+  width: 80px;
+  border-radius: 10px;
+  border: 1px transparent solid;
+}
+#update-quantity:focus {
+  outline: none;
+}
+#result-table.sell #update-quantity:focus { background-color: #FCC6BB; }
+#result-table.add #update-quantity:focus { background-color: #C2FCBB; }
+#decrement, #increment {
+  line-height: 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+/* #result-table.sell tr:nth-child(odd) { background-color: #FCBBBB; } */
+/* #result-table.sell tr:nth-child(even) { background-color: #FA8F8F; } */
+
+/* #result-table.add tr:nth-child(odd) { background-color: #BFFCBB; } */
+/* #result-table.add tr:nth-child(even) { background-color: #96FA8F; } */

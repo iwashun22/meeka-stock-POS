@@ -1,4 +1,5 @@
 const supabase = require('../util/supabase.cjs');
+const formatDate = require('../util/formatDate.cjs');
 
 async function getProductData(req, res, next) {
   const { id } = req.params;
@@ -11,20 +12,13 @@ async function getProductData(req, res, next) {
 
   if (error) {
     if (error.code === 'PGRST116') {
-      return res.status(404).render('search', { user: req.user, data: null, notFound: true });
+      return res.status(404).render('search', { user: req.user, data: null, notFound: true, lastSearch: id });
     }
     console.error('Error fetching product:', error);
     return res.status(500).send('Internal Server Error');
   }
 
-  const date = new Date(productData.updated_at);
-
-  const formatted = new Intl.DateTimeFormat("th-TH", {
-    dateStyle: "medium",
-    timeStyle: "short"
-  }).format(date);
-
-  req.productData = { ...productData, updated_at: formatted };
+  req.productData = { ...productData, updated_at: formatDate(productData.updated_at) };
   next();
 }
 

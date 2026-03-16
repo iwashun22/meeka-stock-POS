@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public', { maxAge: '1d' }));
+app.use(express.static('public', { maxAge: 0 /* only in development */ }));
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(helmet());

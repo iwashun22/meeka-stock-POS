@@ -3,23 +3,58 @@ extends layout
 block content
   h1(class="page-title kn-bold") อัปเดตสินค้า
 
-  table(class="product-table")
+  table(class="product-table pp-reg")
     tr
-      th รหัสสินค้า
+      th รหัส
       td #{data.sku_id}
-    tr
-      th ชื่อสินค้า
-      td #{data.name}
+    tr(class="name-row")
+      th สินค้า
+      td(id="product-name") #{data.name}
     tr
       th จำนวน
-      td #{data.count}
+      td(id="product-stock") #{data.stock}
     tr
       th ราคา
-      td #{data.price}
+      td(id="product-price") #{Number(data.selling_price).toFixed(2)} ฿
 
-  p(class="updated-at") อัปเดตเมื่อ: #{data.updated_at}
+  p(class="updated-at kn-light") อัปเดตเมื่อ: #{data.updated_at}
 
-  if notPermitted
-    p(class="not-permitted") คุณไม่มีสิทธิ์ในการอัปเดตข้อมูลสินค้า หากเป็นพนักงานกรุณาแจ้งเพื่อขอสิทธิ์
+  if !user.roles.name
+    p(class="not-permitted kn-light") คุณไม่มีสิทธิ์ในการอัปเดตข้อมูลสินค้า หากเป็นพนักงานกรุณาแจ้งเพื่อขอสิทธิ์
   else
-    p You have permission to update this product.
+    section(class="action-container")
+      div
+
+        if ['employee', 'manager', 'admin'].includes(user.roles.name) && data.stock > 0
+          button(id="sell-stock-btn" class="kn-bold") ขายสินค้า
+
+        if ['manager', 'admin'].includes(user.roles.name)
+          button(id="add-stock-btn" class="kn-bold") เพิ่มสินค้า
+
+      form(id="update-stock-form" action=`/update/${data.sku_id}` method="POST")
+        input(id="action-name" type="hidden" name="action" value="sell")
+
+        table(id="result-table")
+          tr
+            th จาก
+            td(colspan=2) #{data.stock}
+          tr
+            th(id="table-header-action-name") ขาย
+            td
+              button(id="decrement" type="button")
+            td
+              input(id="update-quantity" type="text" name="quantity" value="1")
+            td
+              button(id="increment" type="button")
+          tr
+            th คงเหลือ
+            td(id="table-data-final-quantity" colspan=2) 11
+        button(type="submit") submit
+
+
+    if user.roles.name === 'employee'
+      p you are an employee
+    else if user.roles.name === 'manager'
+      p you are a manager
+    else if user.roles.name === 'admin'
+      p you are an admin

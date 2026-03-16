@@ -8,12 +8,9 @@ router.post('/', (req, res) => {
 
 router.get('/:id', getProductData, (req, res) => {
   const { productData } = req;
+  const lastSearch = productData.sku_id;
 
-  if (!productData) {
-    return res.status(404).render('search', { data: null, notFound: true });
-  }
-
-  res.render('search', { user: req.user, data: productData });
+  res.render('search', { user: req.user, data: productData, lastSearch });
 })
 
 module.exports = router;

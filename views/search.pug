@@ -4,7 +4,7 @@ block content
   form(action="/product", method="POST" class="search-form")
     div
       label(for="sku-id") Search Products:
-      input(type="text" id="sku-id" name="sku_id" autocomplete="off" required value=data ? data.sku_id : '')
+      input(type="text" id="sku-id" name="sku_id" autocomplete="off" required value=lastSearch || '')
       div(id="scan-icon-container")
     div
       button(type="submit") Search
@@ -15,12 +15,16 @@ block content
   if data
     div
       h2 #{data.name}
-      p price:  #{data.price} THB
-      p stock: #{data.count}
+      p price:  #{data.selling_price} THB
+      p stock: #{data.stock}
 
     div
       a(href=`/update/${data.sku_id}`)
         button Update Product
+
+  if user && user.roles.name === 'admin'
+    a(href='/update/new/product')
+      button(id="add-product-btn")
       //- form(action="/update", method="POST")
         input(type="hidden" name="id" value=data.id)
         div
