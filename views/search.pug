@@ -1,26 +1,36 @@
 extends layout 
 
 block content
-  form(action="/product", method="POST" class="search-form")
+  h1(class="page-title kn-bold") สแกนรหัส
+  form(action="/product/search", method="GET" class="search-form")
+    div(class="search-bar")
+      input(class="search-input" type="text" id="sku-id" name="sku_id" autocomplete="off" value=lastSearch || '')
+      button(type="button" id="scan-icon-btn")
     div
-      label(for="sku-id") Search Products:
-      input(type="text" id="sku-id" name="sku_id" autocomplete="off" required value=lastSearch || '')
-      div(id="scan-icon-container")
-    div
-      button(type="submit") Search
+      button(type="submit" class="search-btn pp-bold") ค้นหา
 
   if notFound
-    p Product not found.
+    p(class="not-found-text") ไม่พบสินค้า
 
   if data
-    div
-      h2 #{data.name}
-      p price:  #{data.selling_price} THB
-      p stock: #{data.stock}
+    table(class="product-table pp-reg")
+      tr(class="name-row")
+        th สินค้า
+        td(id="product-name")
+          span #{data.name}
+      tr
+        th จำนวน
+        td(id="product-stock") #{data.stock}
 
-    div
+      if user && user.roles.name
+        tr
+          th ราคา
+          td(id="product-price")
+            span #{Number(data.selling_price).toFixed(2)} ฿
+
+    div(class="update-link-container")
       a(href=`/update/${data.sku_id}`)
-        button Update Product
+        button(class="update-link kn-reg") แก้ไขข้อมูล
 
   if user && user.roles.name === 'admin'
     a(href='/update/new/product')

@@ -8,7 +8,12 @@ html(lang="th")
     link(rel="stylesheet", href="/css/loadfonts.css")
     link(rel="icon", href="/favicon.ico")
     script(src="/dist/bundle.js" defer)
-  body
+  body(data-update-token=updateToken)
+    div(id="alert-container")
+      if successMessage
+        span(class="message-box success")
+          span(class="message") #{successMessage}
+          button
     div(class="topbar")
       a(href="/" class="nav-link home-link")
         button(class="kn-reg") สแกน

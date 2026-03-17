@@ -6,16 +6,21 @@ const { permittedRoles } = require('../middleware/permittedRoles.cjs');
 const checkRole = require('../util/checkRole.cjs');
 const supabase = require('../util/supabase.cjs');
 
+const { generateOrGetToken } = require('../util/updateTrackerMap.cjs');
+
 router.get('/:id', requireAuth, getProductData, (req, res) => {
   const { user, productData } = req;
+  const { id } = req.params;
 
-  res.render('update', { user: user, data: productData });
+  const token = generateOrGetToken(id);
+
+  res.render('update', { user: user, data: productData, updateToken: token });
 });
 
 router.post('/stock/:id',
   requireAuth,
-  getProductData,
   permittedRoles(false, true, true),
+  getProductData,
   async (req, res) =>
 {
   const { user, productData } = req;
@@ -51,8 +56,18 @@ router.post('/stock/:id',
     return res.status(500).send("Error updating stock");
   }
 
-  return res.redirect(`/update/${id}`);
-})
+  req.session.success = 'แก้ไขข้อมูลสำเร็จ';
+  res.redirect(`/product/info/${id}`);
+});
+
+router.post('/change/:id',
+  requireAuth,
+  permittedRoles(false, false, false),
+  getProductData,
+  (req, res) =>
+{
+  res.send('Coming Soon');
+});
 
 router.get('/new/product', requireAuth, (req, res) => {
   if (req.user.roles.name !== 'admin') {

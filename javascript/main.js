@@ -5,6 +5,8 @@ import { convertSVGToDOMNode } from './convertSVG';
 import { startScanner } from './readQRCode';
 import loadPasswordToggle from './loadPasswordToggle';
 import { addSellEvent } from './updateProductForm';
+import loadAlertMessage from './loadAlertMessage';
+import handleEditableForm from './adminEditableHandler';
 
 const scanIconElement = convertSVGToDOMNode(scanIcon, 26, 26);
 const plusIconElement = convertSVGToDOMNode(plusIcon, 32, 32);
@@ -12,12 +14,12 @@ const plusIconElement = convertSVGToDOMNode(plusIcon, 32, 32);
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM fully loaded and parsed');
 
-  const scanIconContainer = document.getElementById('scan-icon-container');
-  if (scanIconContainer) {
-    scanIconContainer.appendChild(scanIconElement);
+  const scanIconBtn = document.getElementById('scan-icon-btn');
+  if (scanIconBtn) {
+    scanIconBtn.appendChild(scanIconElement);
 
-    scanIconContainer.addEventListener('click', () => {
-      console.log('Scan icon clicked');
+    scanIconBtn.addEventListener('click', () => {
+      // console.log('Scan icon clicked');
       startScanner();
     });
   }
@@ -31,4 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   addSellEvent();
+  loadAlertMessage();
+  handleEditableForm();
 });

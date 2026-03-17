@@ -12,6 +12,44 @@ body {
 
 button {
   cursor: pointer;
+  line-height: 0;
+}
+
+#alert-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+}
+.message-box {
+  display: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  color: #fff;
+  min-height: 80px;
+  width: 240px;
+  align-items: center;
+  justify-content: space-between;
+}
+.message-box.success {
+  background-color: #22C55E;
+}
+.message-box.show {
+  display: flex;
+}
+.message {
+  font-size: 16px;
+}
+.message-box button {
+  background-color: transparent;
+  border: none;
+  line-height: 1;
+}
+.message-box button svg {
+  color: #fff;
 }
 
 .topbar {
@@ -44,8 +82,64 @@ button {
   font-size: 26px;
 }
 
-#scan-icon-container {
-  cursor: pointer;
+.search-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70vw;
+  max-width: 300px;
+  margin: 20px auto 40px;
+}
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+.search-input {
+  margin-right: 10px;
+  font-size: 18px;
+  padding: 0 10px;
+  border-radius: 15px;
+  border: 2px transparent solid;
+  color: #C88809;
+  height: 38px;
+  line-height: 38px;
+  font-family: monospace;
+  font-weight: bold;
+}
+.search-input:focus {
+  border-color: #F4A60B;
+  color: black;
+  outline: none;
+}
+#scan-icon-btn {
+  flex-shrink: 0;
+  background-color: #F4A60B;
+  border: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+}
+#scan-icon-btn:hover {
+  background-color: #C88809;
+}
+#scan-icon-btn svg {
+  color: white;
+}
+.search-btn {
+  padding: 14px 20px;
+  background-color: #FCE6BB;
+  border: 2px black solid;
+  box-shadow: 2px 2px 1px black;
+}
+
+.not-found-text {
+  text-align: center;
+  font-size: 20px;
+  color: #969696;
 }
 
 #qr-reader {
@@ -56,13 +150,27 @@ button {
   left: 50%;
   transform: translate(-50%, -50%);
   display: none;
-  background-color: #eee;
+  background-color: #ddd;
 }
+button.html5-qrcode-element {
+  padding: 12px 12px;
+}
+.close-btn-container {
+  text-align: center;
+  padding: 20px;
+}
+#close-qr-btn {
+  padding: 20px 20px;
+  background-color: #FF2E2E;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+}
+
 #add-product-btn {
   padding: 14px;
   border-radius: 50%;
   border: none;
-  line-height: 0;
   position: fixed;
   bottom: 30px;
   right: 30px;
@@ -119,7 +227,6 @@ button {
   top: 50%;
   transform: translateY(-50%);
   display: inline-block;
-  line-height: 0;
 }
 .toggle-password-icon {
   width: 18px;
@@ -133,6 +240,7 @@ button {
   color: white;
   border: none;
   border-radius: 4px;
+  padding: 20px 20px;
 }
 .form-submit:hover {
   background-color: #432DD7;
@@ -169,17 +277,79 @@ a.bottom-link:hover {
   font-weight: bold;
   font-size: 14px;
   padding: 10px;
+  /* box-sizing: border-box; */
+  /* width: 100px; */
 }
 .product-table td {
   padding: 10px 15px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
 }
-.product-table tr {
-  font-weight: 400;
-}
 .product-table .name-row td {
   font-size: 20px;
+}
+.product-table .product-id {
+  font-family: monospace;
+}
+
+form.editable {
+  display: none;
+}
+.table-data-wrapper, form.editable.show {
+  display: flex;
+  flex-direction: column;
+}
+form.editable input[type=text] {
+  max-width: 300px;
+  line-height: 30px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 2px black solid;
+}
+form.editable input[type=text]:focus {
+  outline: none;
+  border-color: #8B5CF6;
+}
+.editable-btn-container {
+  margin-top: 8px;
+  text-align: end;
+}
+.editable-btn-container button {
+  padding: 4px 6px;
+  line-height: 1;
+  margin: 0 5px;
+  border-radius: 6px;
+  border: 2px transparent solid;
+}
+.editable-btn-container .cancel-editable {
+  color: #333;
+  background-color: transparent;
+  border-color: #333;
+}
+.editable-btn-container .submit-editable {
+  color: #fff;
+  border-color: #16A34A;
+  background-color: #16A34A;
+}
+
+.update-link-container {
+  margin: 40px auto 0;
+  width: 90%;
+  max-width: 800px;
+  text-align: end;
+}
+.update-link {
+  padding: 14px 20px;
+  margin-right: 20px;
+  border-radius: 8px;
+  border: 2px #2E54FF solid;
+  background-color: transparent;
+  color: #2E54FF;
+}
+.update-link:hover {
+  background-color: #2E54FF;
+  color: #fff;
 }
 
 .updated-at {
@@ -218,7 +388,7 @@ a.bottom-link:hover {
   margin-top: 15px;
 }
 #sell-stock-btn, #add-stock-btn {
-  padding: 10px 20px;
+  padding: 20px 20px;
   border: none;
   margin: 0 5px;
   border-radius: 8px;
@@ -271,7 +441,6 @@ a.bottom-link:hover {
 #result-table.sell #update-quantity:focus { background-color: #FCC6BB; }
 #result-table.add #update-quantity:focus { background-color: #C2FCBB; }
 #decrement, #increment {
-  line-height: 0;
   border: none;
   border-radius: 50%;
   padding: 5px;
@@ -287,7 +456,7 @@ a.bottom-link:hover {
 }
 #close-form-btn,
 #save-form-btn {
-  padding: 5px 10px;
+  padding: 14px 20px;
   border: 2px #000 solid;
   margin: 0 10px;
   border-radius: 6px;
