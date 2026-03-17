@@ -22,6 +22,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// TODO: In production, set trust proxy in order to make rate-limiter work
+
 app.set('view engine', 'pug');
 
 app.use('/', require('./routes/index.cjs'));

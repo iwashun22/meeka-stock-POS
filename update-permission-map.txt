@@ -1,0 +1,7 @@
+sell -------------------> employee, manager, admin
+restock ----------------> manager, admin
+edit product name ------> admin
+edit product price -----> admin
+edit product id <!!> ---> admin ?
+
+add new product --------> admin

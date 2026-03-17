@@ -16,6 +16,7 @@ export function addSellEvent() {
 
   const productStock = Number(document.getElementById('product-stock').innerText);
 
+  // Prevent submitting form by "enter"
   updateStockForm.addEventListener("keydown", (e) => {
     if (e.key === 'Enter') e.preventDefault();
   });
@@ -48,10 +49,12 @@ export function addSellEvent() {
     updateResultTable(actionNameInput.value, null)(null);
   });
 
-  updateQuantityInput.addEventListener("focus", (e) => {
-    requestAnimationFrame(() => {
-      const length = e.target.value.length;
-      e.target.setSelectionRange(length, length);
+  ["focus", "mouseup", "touchend"].forEach(inputEvent => {
+    updateQuantityInput.addEventListener(inputEvent, (e) => {
+      requestAnimationFrame(() => {
+        const length = e.target.value.length;
+        e.target.setSelectionRange(length, length);
+      });
     });
   });
 
@@ -73,6 +76,31 @@ export function addSellEvent() {
 
   decrementBtn.appendChild(minusSVG);
   incrementBtn.appendChild(plusSVG);
+
+  [
+    { element: decrementBtn, fn: (x) => Number(x)-1 },
+    { element: incrementBtn, fn: (x) => Number(x)+1 }
+  ].forEach(({ element, fn }) => {
+    element.addEventListener("click", (e) => {
+      e.preventDefault();
+      const nextValue = fn(updateQuantityInput.value);
+
+      if (
+        (nextValue > productStock && actionNameInput.value === "sell") ||
+        (nextValue <= 0)
+      ) return;
+
+      updateQuantityInput.value = nextValue;
+      updateResultTable(actionNameInput.value, null)(e);
+    });
+  });
+
+  const closeFormBtn = document.getElementById("close-form-btn");
+  closeFormBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    updateQuantityInput.value = 1;
+    updateStockForm.style.display = 'none';
+  });
 }
 
 
@@ -107,4 +135,19 @@ const updateResultTable = (actionName, stockFormRef) => (e) => {
   }
 
   tableDataFinalQuantity.innerText = finalQuantity;
+  updateSellTotalPrice(quantity, actionName);
+}
+
+function updateSellTotalPrice(quantity, actionName) {
+  const sellTotalPrice = document.getElementById("sell-total-price");
+
+  if (actionName !== "sell") {
+    sellTotalPrice.innerText = '';
+    return;
+  }
+
+  const price = sellTotalPrice.dataset.sellingPrice;
+
+  const totalPrice = (Number(quantity) * Number(price)).toFixed(2);
+  sellTotalPrice.innerText = `${totalPrice} ฿`;
 }

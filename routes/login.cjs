@@ -72,6 +72,9 @@ router.post('/', loginLimiter, (req, res, next) => {
 
       const returnTo = req.cookies.returnTo || '/';
       res.clearCookie('returnTo');
+
+      // reset limiter if authenticated
+      loginLimiter.resetKey(req.ip);
       return res.redirect(returnTo);
     });
   })(req, res, next);

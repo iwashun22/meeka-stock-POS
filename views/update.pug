@@ -9,13 +9,21 @@ block content
       td #{data.sku_id}
     tr(class="name-row")
       th สินค้า
-      td(id="product-name") #{data.name}
-    tr
-      th จำนวน
-      td(id="product-stock") #{data.stock}
-    tr
-      th ราคา
-      td(id="product-price") #{Number(data.selling_price).toFixed(2)} ฿
+      td(id="product-name")
+        span #{data.name}
+        if user.roles.name === "admin"
+          button(class="admin-edit-btn kn-reg" data-html-for="") แก้ไข
+
+    if user.roles.name
+      tr
+        th จำนวน
+        td(id="product-stock") #{data.stock}
+      tr
+        th ราคา
+        td(id="product-price")
+          span #{Number(data.selling_price).toFixed(2)} ฿
+          if user.roles.name === "admin"
+            button(class="admin-edit-btn kn-reg" data-html-for="") แก้ไข
 
   p(class="updated-at kn-light") อัปเดตเมื่อ: #{data.updated_at}
 
@@ -31,25 +39,29 @@ block content
         if ['manager', 'admin'].includes(user.roles.name)
           button(id="add-stock-btn" class="kn-bold") เพิ่มสินค้า
 
-      form(id="update-stock-form" action=`/update/${data.sku_id}` method="POST")
+      form(id="update-stock-form" action=`/update/stock/${data.sku_id}` method="POST")
         input(id="action-name" type="hidden" name="action" value="sell")
 
         table(id="result-table")
           tr
-            th จาก
+            th(class="kn-reg") จาก
             td(colspan=2) #{data.stock}
           tr
-            th(id="table-header-action-name") ขาย
+            th(class="kn-reg" id="table-header-action-name") ขาย
             td
               button(id="decrement" type="button")
             td
-              input(id="update-quantity" type="text" name="quantity" value="1")
+              input(id="update-quantity" type="text" name="quantity" value="1" inputmode="numeric")
             td
               button(id="increment" type="button")
+            td(id="sell-total-price" data-selling-price=`${data.selling_price}`)
           tr
-            th คงเหลือ
+            th(class="kn-bold") คงเหลือ
             td(id="table-data-final-quantity" colspan=2) 11
-        button(type="submit") submit
+        tr
+        div(class="final-btn-container")
+          button(class="kn-reg" type="button" id="close-form-btn") ยกเลิก
+          button(class="kn-reg" type="submit" id="save-form-btn") บันทึก
 
 
     if user.roles.name === 'employee'
