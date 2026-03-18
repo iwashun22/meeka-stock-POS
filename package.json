@@ -9,6 +9,7 @@
     "bundle-watch": "webpack --watch"
   },
   "dependencies": {
+    "@logtail/node": "^0.5.8",
     "@supabase/supabase-js": "^2.99.1",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",

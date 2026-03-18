@@ -5,16 +5,12 @@ const { sum, subtract } = require('../util/mathOperator.cjs');
 const { permittedRoles } = require('../middleware/permittedRoles.cjs');
 const checkRole = require('../util/checkRole.cjs');
 const supabase = require('../util/supabase.cjs');
-
-const { generateOrGetToken } = require('../util/updateTrackerMap.cjs');
+const logger = require('../util/logger.cjs');
 
 router.get('/:id', requireAuth, getProductData, (req, res) => {
   const { user, productData } = req;
-  const { id } = req.params;
 
-  const token = generateOrGetToken(id);
-
-  res.render('update', { user: user, data: productData, updateToken: token });
+  res.render('update', { user: user, data: productData });
 });
 
 router.post('/stock/:id',
@@ -44,6 +40,7 @@ router.post('/stock/:id',
   }
 
   const fn = action === "sell" ? subtract : sum;
+  const log_info = action === "sell" ? "SELL" : "ADD";
   const updatedStock = fn(productData.stock, quantity);
 
   const timestamp = new Date().toISOString();
@@ -55,6 +52,16 @@ router.post('/stock/:id',
   if (error) {
     return res.status(500).send("Error updating stock");
   }
+
+  logger.info(`${log_info} [${quantity}] product: ${id}`, {
+    previous: productData,
+    updateByUser: user,
+    stockChange: {
+      before: productData.stock,
+      now: updatedStock
+    }
+  });
+  logger.flush();
 
   req.session.success = 'แก้ไขข้อมูลสำเร็จ';
   res.redirect(`/product/info/${id}`);
