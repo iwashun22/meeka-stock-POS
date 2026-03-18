@@ -53,9 +53,17 @@ router.post('/stock/:id',
     return res.status(500).send("Error updating stock");
   }
 
+  const {
+    hashed_password: _a,
+    role_id: _b,
+    ...userInfo
+  } = user;
   logger.info(`${log_info} [${quantity}] product: ${id}`, {
     previous: productData,
-    updateByUser: user,
+    updateByUser: {
+      ...userInfo,
+      roles: userInfo.roles.name
+    },
     stockChange: {
       before: productData.stock,
       now: updatedStock
@@ -73,6 +81,20 @@ router.post('/change/:id',
   getProductData,
   (req, res) =>
 {
+  const { on, new_value } = req.body;
+
+  switch (on) {
+    case 'product_name':
+      // TODO: 
+      break;
+    case 'selling_price':
+      // TODO: check price format
+      break;
+    default:
+      res.send(400).send('Bad request');
+      break;
+  }
+
   res.send('Coming Soon');
 });
 
