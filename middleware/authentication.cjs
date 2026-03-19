@@ -17,6 +17,8 @@ const passwordIsCorrect = (...requestBody) => async (req, res) => {
       break;
     }
   }
+
+  if (!req.user) return false;
   const id = req.user.id;
 
   const { data, error } = await supabase
