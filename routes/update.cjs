@@ -48,6 +48,10 @@ router.post('/user/password', requireAuth, async (req, res) => {
     err.on = 'new_password';
     err.message = 'รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร';
   }
+  else if (old_password === new_password) {
+    err.on = 'new_password';
+    err.message = 'กรุณาตั้งรหัสผ่านใหม่ที่ไม่ซ้ำกับรหัสเดิม';
+  }
   else if (new_password !== confirmation) {
     err.on = 'confirmation';
     err.message = 'รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน';
