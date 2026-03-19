@@ -1,5 +1,4 @@
 const logger = require('./logger.cjs');
-const logUserInfo = require('./logUserInfo.cjs');
 
 const formatLog = (event, messageFormatCallback) => (user, productData, [updateKey, updateValue], quantity = null) => {
   const { sku_id, updated_at, ...data } = productData;
@@ -13,7 +12,7 @@ const formatLog = (event, messageFormatCallback) => (user, productData, [updateK
 
   logger.info(formatted, {
     event,
-    user: logUserInfo(user),
+    user,
     product_id: sku_id,
     quantity,
     data: {

@@ -15,6 +15,18 @@ button {
   line-height: 0;
 }
 
+.page-not-found-redirect-btn {
+  padding: 10px 16px;
+  border: none;
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 10px;
+  line-height: 1;
+}
+.page-not-found-redirect-btn:hover {
+  background-color: #2e6aca;
+}
+
 #alert-container {
   position: fixed;
   top: 20px;
@@ -203,9 +215,18 @@ button.html5-qrcode-element {
 .registration-form input {
   padding: 8px;
   width: 250px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 2px solid #000;
+  border-radius: 8px;
   font-size: 18px;
+  transition: .2s;
+}
+.registration-form input::placeholder {
+  color: #c4c4c4;
+}
+.registration-form input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 8px 3px rgba(59, 130, 246, 0.3);
 }
 .registration-form .error-message {
   color: red;

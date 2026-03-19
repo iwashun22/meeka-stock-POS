@@ -38,6 +38,10 @@ app.get('/logout', (req, res) => {
   });
 });
 
+app.use((req, res) => {
+  res.status(404).render('notfound');
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });

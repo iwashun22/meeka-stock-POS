@@ -12,7 +12,7 @@ block content
     tr(class="name-row")
       th สินค้า
       td(id="product-name")
-        if user.roles.name === "admin"
+        if user.role === "admin"
           form(id="edit-product-name" class="editable" action=`/update/change/${data.sku_id}` method="POST")
             input(type="hidden" name="on" value="product_name")
             input(type="text" name="new_value" autocomplete="off")
@@ -21,13 +21,13 @@ block content
               button(class="submit-editable kn-reg" type="submit") บันทึก
         div(class="table-data-wrapper")
           span #{data.name}
-          if user.roles.name === "admin"
+          if user.role === "admin"
             div(class="editable-btn-container")
               button(class="admin-edit-btn kn-reg" data-html-for="edit-product-name" data-input-value=data.name) แก้ไข
     tr
       th ที่เก็บ
       td(id="product-location")
-        if user.roles.name === "admin"
+        if user.role === "admin"
           form(id="edit-product-location" class="editable" action=`/update/change/${data.sku_id}` method="POST")
             input(type="hidden" name="on" value="product_location")
             input(type="text" name="new_value" autocomplete="off")
@@ -36,7 +36,7 @@ block content
               button(class="submit-editable kn-reg" type="submit") บันทึก
         div(class="table-data-wrapper")
           span #{data.location}
-          if user.roles.name === "admin"
+          if user.role === "admin"
             div(class="editable-btn-container")
               button(class="admin-edit-btn kn-reg" data-html-for="edit-product-location" data-input-value=`${data.location || ''}`) แก้ไข
     tr
@@ -45,11 +45,11 @@ block content
         div(class="table-data-wrapper")
           span #{data.stock}
 
-    if user.roles.name
+    if user.role
       tr
         th ราคา
         td(id="product-price")
-          if user.roles.name === "admin"
+          if user.role === "admin"
             form(id="edit-selling-price" class="editable" action=`/update/change/${data.sku_id}` method="POST")
               input(type="hidden" name="on" value="selling_price")
               input(id="edit-price-input" type="text" name="new_value" autocomplete="off")
@@ -58,22 +58,22 @@ block content
                 button(class="submit-editable kn-reg" type="submit") บันทึก
           div(class="table-data-wrapper")
             span #{data.selling_price} ฿
-            if user.roles.name === "admin"
+            if user.role === "admin"
               div(class="editable-btn-container")
                 button(class="admin-edit-btn kn-reg" data-html-for="edit-selling-price" data-input-value=data.selling_price) แก้ไข
 
   p(class="updated-at kn-light") อัปเดตเมื่อ: #{data.updated_at}
 
-  if !user.roles.name
+  if !user.role
     p(class="not-permitted kn-light") คุณไม่มีสิทธิ์ในการอัปเดตข้อมูลสินค้า หากเป็นพนักงานกรุณาแจ้งเพื่อขอสิทธิ์
   else
     section(class="action-container")
       div
 
-        if ['employee', 'manager', 'admin'].includes(user.roles.name) && data.stock > 0
+        if ['employee', 'manager', 'admin'].includes(user.role) && data.stock > 0
           button(id="sell-stock-btn" class="kn-bold") ขายสินค้า
 
-        if ['manager', 'admin'].includes(user.roles.name)
+        if ['manager', 'admin'].includes(user.role)
           button(id="add-stock-btn" class="kn-bold") เพิ่มสินค้า
 
       form(id="update-stock-form" action=`/update/stock/${data.sku_id}` method="POST")

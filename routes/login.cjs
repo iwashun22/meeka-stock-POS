@@ -37,7 +37,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   const { data, error } = await supabase
     .from('users')
-    .select('*, roles(*)')
+    .select('id, username, roles(*)')
     .eq('id', id)
     .single();
 
@@ -45,7 +45,10 @@ passport.deserializeUser(async (id, done) => {
     return done(null, false);
   }
 
-  done(null, data);
+  const { roles, ...user} = data;
+  user.role = roles.name;
+
+  done(null, user);
 });
 
 router.get('/', (req, res) => {

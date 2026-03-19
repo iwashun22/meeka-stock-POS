@@ -5,7 +5,7 @@ const permittedRoles = (
   employee = true,
   manager = true
 ) => (req, res, next) => {
-  if (checkRole(req.user.roles.name)(anonymous, employee, manager)){
+  if (checkRole(req.user.role)(anonymous, employee, manager)){
     next();
   }
   else {

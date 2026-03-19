@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const getProductData = require('../middleware/getProductData.cjs');
+const { getAlertMessages } = require('../util/alertMessage.cjs');
 
 router.get('/search', (req, res) => {
   const product_sku_id = req.query.sku_id;
@@ -15,10 +16,9 @@ router.get('/info/:id', getProductData, (req, res) => {
   const { productData } = req;
   const lastSearch = productData.sku_id;
 
-  const successMessage = req.session.success || undefined;
-  delete req.session.success;
+  const messages = getAlertMessages(req);
 
-  res.render('search', { user: req.user, data: productData, lastSearch, successMessage: successMessage });
+  res.render('search', { user: req.user, data: productData, lastSearch, messages });
 });
 
 module.exports = router;

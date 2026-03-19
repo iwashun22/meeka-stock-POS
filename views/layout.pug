@@ -10,14 +10,17 @@ html(lang="th")
     script(src="/dist/bundle.js" defer)
   body()
     div(id="alert-container")
-      if successMessage
-        span(class="message-box success")
-          span(class="message") #{successMessage}
-          button
+      if messages
+        each message in messages
+          span(class=`message-box ${message.type}`)
+            span(class="message") #{message.text}
+            button
     div(class="topbar")
       a(href="/" class="nav-link home-link")
         button(class="kn-reg") สแกน
       if user
+        a(href="/update/user/password" class="nav-link")
+          button(class="kn-reg") เปลี่ยนรหัส
         a(href="/logout" class="nav-link") 
           button(class="kn-reg") ออกจากระบบ
       else

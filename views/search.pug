@@ -18,7 +18,7 @@ block content
         th สินค้า
         td(id="product-name")
           span #{data.name}
-      if user && user.roles.name
+      if user && user.role
         tr
           th ที่เก็บ
           td
@@ -27,7 +27,7 @@ block content
         th จำนวน
         td(id="product-stock") #{data.stock}
 
-      if user && user.roles.name
+      if user && user.role
         tr
           th ราคา
           td(id="product-price")
@@ -37,7 +37,7 @@ block content
       a(href=`/update/${data.sku_id}`)
         button(class="update-link kn-reg") แก้ไขข้อมูล
 
-  if user && user.roles.name === 'admin'
+  if user && user.role === 'admin'
     a(href='/update/new/product')
       button(id="add-product-btn")
       //- form(action="/update", method="POST")

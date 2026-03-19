@@ -3,6 +3,7 @@ const supabase = require('../util/supabase.cjs');
 const bcrypt = require('bcrypt');
 const validateRegistration = require('../middleware/validateRegistration.cjs');
 const { rateLimit } = require('express-rate-limit');
+const passport = require('passport');
 
 const registerLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -14,12 +15,10 @@ router.get('/', (req, res) => {
   if(req.isAuthenticated()) {
     return res.redirect('/');
   }
-  res.render('register', {
-    previousInput: { username: '', password: '', confirmation: '' }
-  });
+  res.render('register', { previousInput: {} });
 });
 
-router.post('/', validateRegistration, registerLimiter, async (req, res) => {
+router.post('/', validateRegistration, registerLimiter, async (req, res, next) => {
   const { username, password } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -29,7 +28,11 @@ router.post('/', validateRegistration, registerLimiter, async (req, res) => {
     hashed_password: hashedPassword
   });
 
-  res.redirect('/login');
-});
+  next();
+},
+passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login'
+}));
 
 module.exports = router;
