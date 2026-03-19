@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { requireAuth } = require('../middleware/authentication.cjs');
+const { requireAuth, passwordIsCorrect } = require('../middleware/authentication.cjs');
 const { validPasswordInput } = require('../util/regexCheck.cjs');
 const getProductData = require('../middleware/getProductData.cjs');
 const { sum, subtract } = require('../util/mathOperator.cjs');
@@ -10,6 +10,15 @@ const supabase = require('../util/supabase.cjs');
 const bcrypt = require('bcrypt');
 const { setAlertMessages } = require('../util/alertMessage.cjs');
 const { sellLog, addLog, changeNameLog, changePriceLog, changeLocationLog } = require('../util/formatLog.cjs');
+const { rateLimit } = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 5,
+  message: 'คุณใส่รหัสผ่านปัจจุบันไม่ถูกต้องหลายครั้ง กรุณาลองใหม่อีกครั้งในภายหลัง',
+  skipSuccessfulRequests: true,
+  requestWasSuccessful: passwordIsCorrect(["old_password"])
+});
 
 router.get('/:id', requireAuth, getProductData, (req, res) => {
   const { user, productData } = req;
@@ -21,7 +30,7 @@ router.get('/user/password', requireAuth, (req, res) => {
   res.render('change-password', { user: req.user, previousInput: {} });
 });
 
-router.post('/user/password', requireAuth, async (req, res) => {
+router.post('/user/password', requireAuth, limiter, async (req, res) => {
   const { old_password, new_password, confirmation } = req.body;
   const { data, error } = await supabase
   .from("users")
@@ -83,6 +92,7 @@ router.post('/user/password', requireAuth, async (req, res) => {
     return res.redirect('/');
   }
 
+  limiter.resetKey(req.ip);
   setAlertMessages(req, [
     ['เปลี่ยนรหัสผ่านสำเร็จ']
   ]);

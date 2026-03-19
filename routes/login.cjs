@@ -3,12 +3,15 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const supabase = require('../util/supabase.cjs');
 const bcrypt = require('bcrypt');
+const { passwordIsCorrect } = require('../middleware/authentication.cjs');
 const { rateLimit } = require('express-rate-limit');
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5,
+  limit: 5,
   message: 'มีการพยายามเข้าสู่ระบบมากเกินไป กรุณาลองใหม่อีกครั้งในภายหลัง',
+  skipSuccessfulRequests: true,
+  requestWasSuccessful: passwordIsCorrect(["password"])
 })
 
 passport.use(new LocalStrategy(async (username, password, done) => {
