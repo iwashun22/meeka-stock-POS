@@ -18,6 +18,11 @@ block content
         th สินค้า
         td(id="product-name")
           span #{data.name}
+      if user && user.roles.name
+        tr
+          th ที่เก็บ
+          td
+            span #{data.location}
       tr
         th จำนวน
         td(id="product-stock") #{data.stock}
@@ -26,7 +31,7 @@ block content
         tr
           th ราคา
           td(id="product-price")
-            span #{Number(data.selling_price).toFixed(2)} ฿
+            span #{data.selling_price} ฿
 
     div(class="update-link-container")
       a(href=`/update/${data.sku_id}`)
