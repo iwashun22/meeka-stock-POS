@@ -5,6 +5,7 @@ const supabase = require('../util/supabase.cjs');
 const bcrypt = require('bcrypt');
 const { passwordIsCorrect } = require('../middleware/authentication.cjs');
 const { rateLimit } = require('express-rate-limit');
+const { loginAttemptFailedLog, loginSuccessLog } = require('../util/formatLog.cjs');
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -23,12 +24,20 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 
   const previousInput = { username, password }
   if (error || !data) {
-    return done(null, false, { message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', previousInput });
+    return done(null, false, {
+      message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
+      reason: 'user_not_found',
+      previousInput
+    });
   }
 
   const isValid = await bcrypt.compare(password, data.hashed_password);
   if (!isValid) {
-    return done(null, false, { message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', previousInput });
+    return done(null, false, {
+      message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
+      reason: 'invalid_credentials',
+      previousInput
+    });
   }
 
   done(null, data);
@@ -67,7 +76,8 @@ router.post('/', loginLimiter, (req, res, next) => {
     if (err) return next(err);
 
     if (!user) {
-      return res.status(401).render('login', { 
+      loginAttemptFailedLog(req, info.reason);
+      return res.status(401).render('login', {
         error: { message: info.message },
         previousInput: info.previousInput || {}
       });
@@ -81,6 +91,7 @@ router.post('/', loginLimiter, (req, res, next) => {
 
       // reset limiter if authenticated
       loginLimiter.resetKey(req.ip);
+      loginSuccessLog(req, null);
       return res.redirect(returnTo);
     });
   })(req, res, next);

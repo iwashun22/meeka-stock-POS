@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { requireAuth, passwordIsCorrect } = require('../middleware/authentication.cjs');
-const { validPasswordInput } = require('../util/regexCheck.cjs');
+const { passwordCheck, BadInputError } = require('../util/inputCheck.cjs');
 const getProductData = require('../middleware/getProductData.cjs');
 const { sum, subtract } = require('../util/mathOperator.cjs');
 const { permittedRoles } = require('../middleware/permittedRoles.cjs');
@@ -9,13 +9,24 @@ const checkPriceFormat = require('../util/checkPriceFormat.cjs');
 const supabase = require('../util/supabase.cjs');
 const bcrypt = require('bcrypt');
 const { setAlertMessages } = require('../util/alertMessage.cjs');
-const { sellLog, addLog, changeNameLog, changePriceLog, changeLocationLog } = require('../util/formatLog.cjs');
+const {
+  sellLog,
+  addLog,
+  changeNameLog,
+  changePriceLog,
+  changeLocationLog,
+  passwordResetAttemptFailedLog,
+} = require('../util/formatLog.cjs');
 const { rateLimit } = require('express-rate-limit');
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   limit: 5,
   message: 'คุณใส่รหัสผ่านปัจจุบันไม่ถูกต้องหลายครั้ง กรุณาลองใหม่อีกครั้งในภายหลัง',
+  handler: (req, res, next, options) => {
+    passwordResetAttemptFailedLog(req)
+		res.status(options.statusCode).send(options.message);
+  },
   skipSuccessfulRequests: true,
   requestWasSuccessful: passwordIsCorrect(["old_password"])
 });
@@ -42,40 +53,31 @@ router.post('/user/password', requireAuth, limiter, async (req, res) => {
     return res.status(500).send("Error getting user from database");
   }
 
-  const correctPassword = await bcrypt.compare(old_password, data.hashed_password);
+  try {
+    const correctPassword = await bcrypt.compare(old_password, data.hashed_password);
 
-  const err = {}
-  if (!correctPassword) {
-    err.on = 'old_password';
-    err.message = 'รหัสผ่านปัจจุบันไม่ถูกต้อง';
-  }
-  else if(!validPasswordInput(new_password)) {
-    err.on = 'new_password';
-    err.message = 'รหัสผ่านต้องประกอบด้วย ตัวอักษรภาษาอังกฤษ ตัวเลข หรืออักขระพิเศษ !@#$%^&*()_+-="\'/ เท่านั้น';
-  }
-  else if (new_password.length < 6) {
-    err.on = 'new_password';
-    err.message = 'รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร';
-  }
-  else if (old_password === new_password) {
-    err.on = 'new_password';
-    err.message = 'กรุณาตั้งรหัสผ่านใหม่ที่ไม่ซ้ำกับรหัสเดิม';
-  }
-  else if (new_password !== confirmation) {
-    err.on = 'confirmation';
-    err.message = 'รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน';
-  }
+    if (!correctPassword) {
+      throw new BadInputError('old_password', 'รหัสผ่านปัจจุบันไม่ถูกต้อง');
+    }
 
-  if (Object.keys(err).length) {
-    return res.render('change-password', {
-      user: req.user,
-      previousInput: {
-        old_password,
-        new_password,
-        confirmation
-      },
-      error: err
+    passwordCheck({
+      password: { text: new_password, field: 'new_password' },
+      confirmation: { text: confirmation, field: 'confirmation' },
+      oldPassword: old_password
     });
+  }
+  catch(err) {
+    if (err instanceof BadInputError) {
+      return res.render('change-password', {
+        user: req.user,
+        previousInput: {
+          old_password,
+          new_password,
+          confirmation
+        },
+        error: err.renderError
+      });
+    }
   }
 
   const hash = await bcrypt.hash(new_password, 10);

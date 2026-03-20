@@ -47,10 +47,42 @@ const changePriceLog = formatLog("CHANGE_PRODUCT_PRICE",
   (name, old_val, new_val, q) => `Change price of "${name}" from ${old_val} to ${new_val}`
 );
 
+
+const userAuthLog = (event, level = "info", messageCallback) => (req, reason) => {
+  const formatted = messageCallback(req, reason);
+
+  const fn = level === "info" ? logger.info.bind(logger) :
+             level === "warn" ? logger.warn.bind(logger) :
+             logger.error.bind(logger);
+
+  fn(formatted, {
+    event,
+    reason,
+    ip: req.ip,
+    userAgent: req.get('User-Agent')
+  });
+  logger.flush();
+}
+
+const loginAttemptFailedLog = userAuthLog("LOGIN_ATTEMPT_FAILED", "warn",
+  (req, reason) => `Login attempt failed for <${req.body.username}> from ${req.ip} (reason: ${reason})`
+);
+
+const loginSuccessLog = userAuthLog("LOGIN_SUCCESS", "info",
+  (req, reason) => `Login success for ${req.body.username} from ${req.ip}`
+);
+
+const passwordResetAttemptFailedLog = userAuthLog("PASSWORD_RESET_FAILED", "warn",
+  (req, _r) => `Password reset failed by ${req.user.username}`
+);
+
 module.exports = {
   sellLog,
   addLog,
   changeNameLog,
   changeLocationLog,
-  changePriceLog
+  changePriceLog,
+  loginAttemptFailedLog,
+  loginSuccessLog,
+  passwordResetAttemptFailedLog,
 };
