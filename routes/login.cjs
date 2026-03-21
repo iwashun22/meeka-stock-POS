@@ -12,7 +12,7 @@ const loginLimiter = rateLimit({
   limit: 5,
   message: 'มีการพยายามเข้าสู่ระบบมากเกินไป กรุณาลองใหม่อีกครั้งในภายหลัง',
   skipSuccessfulRequests: true,
-  requestWasSuccessful: passwordIsCorrect(["password"])
+  requestWasSuccessful: passwordIsCorrect("password")
 })
 
 passport.use(new LocalStrategy(async (username, password, done) => {

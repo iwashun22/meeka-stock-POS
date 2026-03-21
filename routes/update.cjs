@@ -16,6 +16,7 @@ const {
   changePriceLog,
   changeLocationLog,
   passwordResetAttemptFailedLog,
+  rateLimitedUserLog
 } = require('../util/formatLog.cjs');
 const { rateLimit } = require('express-rate-limit');
 
@@ -24,11 +25,11 @@ const limiter = rateLimit({
   limit: 5,
   message: 'คุณใส่รหัสผ่านปัจจุบันไม่ถูกต้องหลายครั้ง กรุณาลองใหม่อีกครั้งในภายหลัง',
   handler: (req, res, next, options) => {
-    passwordResetAttemptFailedLog(req)
+    rateLimitedUserLog(req, 'password_reset_abuse_detected');
 		res.status(options.statusCode).send(options.message);
   },
   skipSuccessfulRequests: true,
-  requestWasSuccessful: passwordIsCorrect(["old_password"])
+  requestWasSuccessful: passwordIsCorrect("old_password")
 });
 
 router.get('/:id', requireAuth, getProductData, (req, res) => {
@@ -68,7 +69,11 @@ router.post('/user/password', requireAuth, limiter, async (req, res) => {
   }
   catch(err) {
     if (err instanceof BadInputError) {
-      return res.render('change-password', {
+      if (err.renderError.on === 'old_password') {
+        passwordResetAttemptFailedLog(req, 'invalid_credentials');
+      }
+
+      return res.status(400).render('change-password', {
         user: req.user,
         previousInput: {
           old_password,

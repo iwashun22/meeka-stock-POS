@@ -73,7 +73,11 @@ const loginSuccessLog = userAuthLog("LOGIN_SUCCESS", "info",
 );
 
 const passwordResetAttemptFailedLog = userAuthLog("PASSWORD_RESET_FAILED", "warn",
-  (req, _r) => `Password reset failed by ${req.user.username}`
+  (req, _r) => `Password reset failed by ${req.user.username} from ${req.ip}`
+);
+
+const rateLimitedUserLog = userAuthLog("USER_RATE_LIMITED", "error",
+  (req, reason) => `Rate limit applied to IP ${req.ip} (reason: ${reason})`
 );
 
 module.exports = {
@@ -85,4 +89,5 @@ module.exports = {
   loginAttemptFailedLog,
   loginSuccessLog,
   passwordResetAttemptFailedLog,
+  rateLimitedUserLog,
 };
