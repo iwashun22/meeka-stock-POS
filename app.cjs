@@ -5,10 +5,18 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const helmet = require('helmet');
 
+const { redisClient, connectRedis } = require('./util/redisClient.cjs');
+const { RedisStore } = require('connect-redis');
+
 const dotenv = require('dotenv');
 dotenv.config();
 
-const rateLimiter = require('./util/rateLimiter.cjs');
+// const rateLimiter = require('./util/rateLimiter.cjs');
+
+const redisStore = new RedisStore({
+  client: redisClient
+});
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -17,14 +25,20 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(helmet());
 app.use(session({
+  store: redisStore,
   secret: process.env.SESSION_SECRET || 'hiding cat',
   resave: false,
   saveUninitialized: true,
+  cookie: {
+    secure: false, // true in production with HTTPS
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 2 // 2 hours
+  }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(rateLimiter);
+// app.use(rateLimiter);
 
 // TODO: In production, set trust proxy in order to make rate-limiter work
 
@@ -46,6 +60,17 @@ app.use((req, res) => {
   res.status(404).render('notfound');
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
-});
+
+(async () => {
+
+  await connectRedis();
+
+  const rateLimiter = require('./util/rateLimiter.cjs');
+
+  app.use(rateLimiter);
+
+  app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
+  });
+
+})();

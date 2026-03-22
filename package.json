@@ -1,11 +1,11 @@
 {
   "name": "meeka-stock-POS",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.cjs",
   "author": "Shun Iwashita <iwashunabc519@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "bundle": "webpack",
+    "bundle": "webpack --mode production",
     "bundle-watch": "webpack --watch"
   },
   "dependencies": {
@@ -23,6 +23,7 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pug": "^3.0.3",
+    "rate-limit-redis": "^4.3.1",
     "redis": "^5.11.0"
   },
   "devDependencies": {

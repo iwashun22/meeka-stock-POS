@@ -4,8 +4,11 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install \
+    && npm install nodemon
 
 COPY . .
+RUN npm run bundle
 
-CMD ["node", "app.cjs"]
+
+CMD ["npx", "nodemon", "app.cjs"]
