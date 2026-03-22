@@ -4,9 +4,11 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const helmet = require('helmet');
-const dotenv = require('dotenv');
 
+const dotenv = require('dotenv');
 dotenv.config();
+
+const rateLimiter = require('./util/rateLimiter.cjs');
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -21,6 +23,8 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(rateLimiter);
 
 // TODO: In production, set trust proxy in order to make rate-limiter work
 

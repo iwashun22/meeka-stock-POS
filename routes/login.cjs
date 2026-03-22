@@ -3,17 +3,18 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const supabase = require('../util/supabase.cjs');
 const bcrypt = require('bcrypt');
-const { passwordIsCorrect } = require('../middleware/authentication.cjs');
-const { rateLimit } = require('express-rate-limit');
+// const { passwordIsCorrect } = require('../middleware/authentication.cjs');
+// const { rateLimit } = require('express-rate-limit');
+const rateLimiter = require('../util/rateLimiter.cjs');
 const { loginAttemptFailedLog, loginSuccessLog } = require('../util/formatLog.cjs');
 
-const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 5,
-  message: 'มีการพยายามเข้าสู่ระบบมากเกินไป กรุณาลองใหม่อีกครั้งในภายหลัง',
-  skipSuccessfulRequests: true,
-  requestWasSuccessful: passwordIsCorrect("password")
-})
+// const loginLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   limit: 5,
+//   message: 'มีการพยายามเข้าสู่ระบบมากเกินไป กรุณาลองใหม่อีกครั้งในภายหลัง',
+//   skipSuccessfulRequests: true,
+//   requestWasSuccessful: passwordIsCorrect("password")
+// })
 
 passport.use(new LocalStrategy(async (username, password, done) => {
   const { data, error } = await supabase
@@ -71,7 +72,7 @@ router.get('/', (req, res) => {
   res.render('login', { error: null, previousInput: {} });
 });
 
-router.post('/', loginLimiter, (req, res, next) => {
+router.post('/', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) return next(err);
 
@@ -83,14 +84,15 @@ router.post('/', loginLimiter, (req, res, next) => {
       });
     }
 
-    req.logIn(user, (err) => {
+    req.logIn(user, async (err) => {
       if (err) return next(err);
 
       const returnTo = req.cookies.returnTo || '/';
       res.clearCookie('returnTo');
 
       // reset limiter if authenticated
-      loginLimiter.resetKey(req.ip);
+      await rateLimiter.resetKey(req.ip);
+      // console.log('reset key');
       loginSuccessLog(req, null);
       return res.redirect(returnTo);
     });

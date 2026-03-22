@@ -15,22 +15,22 @@ const {
   changeNameLog,
   changePriceLog,
   changeLocationLog,
-  passwordResetAttemptFailedLog,
-  rateLimitedUserLog
+  passwordResetAttemptFailedLog
 } = require('../util/formatLog.cjs');
-const { rateLimit } = require('express-rate-limit');
+// const { rateLimit } = require('express-rate-limit');
+const rateLimiter = require('../util/rateLimiter.cjs');
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 5,
-  message: 'คุณใส่รหัสผ่านปัจจุบันไม่ถูกต้องหลายครั้ง กรุณาลองใหม่อีกครั้งในภายหลัง',
-  handler: (req, res, next, options) => {
-    rateLimitedUserLog(req, 'password_reset_abuse_detected');
-		res.status(options.statusCode).send(options.message);
-  },
-  skipSuccessfulRequests: true,
-  requestWasSuccessful: passwordIsCorrect("old_password")
-});
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   limit: 5,
+//   message: 'คุณใส่รหัสผ่านปัจจุบันไม่ถูกต้องหลายครั้ง กรุณาลองใหม่อีกครั้งในภายหลัง',
+//   handler: (req, res, next, options) => {
+//     rateLimitedUserLog(req, 'password_reset_abuse_detected');
+// 		res.status(options.statusCode).send(options.message);
+//   },
+//   skipSuccessfulRequests: true,
+//   requestWasSuccessful: passwordIsCorrect("old_password")
+// });
 
 router.get('/:id', requireAuth, getProductData, (req, res) => {
   const { user, productData } = req;
@@ -42,7 +42,7 @@ router.get('/user/password', requireAuth, (req, res) => {
   res.render('change-password', { user: req.user, previousInput: {} });
 });
 
-router.post('/user/password', requireAuth, limiter, async (req, res) => {
+router.post('/user/password', requireAuth, async (req, res) => {
   const { old_password, new_password, confirmation } = req.body;
   const { data, error } = await supabase
   .from("users")
@@ -99,7 +99,7 @@ router.post('/user/password', requireAuth, limiter, async (req, res) => {
     return res.redirect('/');
   }
 
-  limiter.resetKey(req.ip);
+  await rateLimiter.resetKey(req.ip);
   setAlertMessages(req, [
     ['เปลี่ยนรหัสผ่านสำเร็จ']
   ]);
