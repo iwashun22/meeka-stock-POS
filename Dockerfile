@@ -17,6 +17,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 COPY icons ./icons
+COPY lib ./lib
 COPY middleware ./middleware
 COPY public ./public
 COPY routes ./routes
