@@ -1,4 +1,4 @@
-const logger = require('./logger.cjs');
+const logger = require('../lib/logger.cjs');
 
 const formatLog = (event, messageFormatCallback) => (user, productData, [updateKey, updateValue], quantity = null) => {
   const { sku_id, updated_at, ...data } = productData;
@@ -80,6 +80,10 @@ const rateLimitedUserLog = userAuthLog("USER_RATE_LIMITED", "error",
   (req, reason) => `Rate limit applied to IP ${req.ip} (reason: ${reason})`
 );
 
+const registrationRestrictedLog = userAuthLog("REGISTRATION_RESTRICTED", "error",
+  (req) => `Registration restricted for IP ${req.ip} (reason: too_many_registrations)`
+);
+
 module.exports = {
   sellLog,
   addLog,
@@ -90,4 +94,5 @@ module.exports = {
   loginSuccessLog,
   passwordResetAttemptFailedLog,
   rateLimitedUserLog,
+  registrationRestrictedLog
 };

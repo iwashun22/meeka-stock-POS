@@ -6,7 +6,7 @@ const { sum, subtract } = require('../util/mathOperator.cjs');
 const { permittedRoles } = require('../middleware/permittedRoles.cjs');
 const checkRole = require('../util/checkRole.cjs');
 const checkPriceFormat = require('../util/checkPriceFormat.cjs');
-const supabase = require('../util/supabase.cjs');
+const supabase = require('../lib/supabase.cjs');
 const bcrypt = require('bcrypt');
 const { setAlertMessages } = require('../util/alertMessage.cjs');
 const {
@@ -18,19 +18,8 @@ const {
   passwordResetAttemptFailedLog
 } = require('../util/formatLog.cjs');
 
-const rateLimiter = require('../util/rateLimiter.cjs');
+const rateLimiter = require('../middleware/rateLimiter.cjs');
 
-// const limiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minutes
-//   limit: 5,
-//   message: 'คุณใส่รหัสผ่านปัจจุบันไม่ถูกต้องหลายครั้ง กรุณาลองใหม่อีกครั้งในภายหลัง',
-//   handler: (req, res, next, options) => {
-//     rateLimitedUserLog(req, 'password_reset_abuse_detected');
-// 		res.status(options.statusCode).send(options.message);
-//   },
-//   skipSuccessfulRequests: true,
-//   requestWasSuccessful: passwordIsCorrect("old_password")
-// });
 
 router.get('/:id', requireAuth, getProductData, (req, res) => {
   const { user, productData } = req;

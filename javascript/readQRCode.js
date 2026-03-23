@@ -1,4 +1,4 @@
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { Html5QrcodeScanner, Html5QrcodeScanType } from "html5-qrcode";
 
 // Located in /views/layout.pug
 function displayReaderDiv(display = false) {
@@ -21,7 +21,11 @@ function onScanFailure(error) {
 
 const html5QrcodeScanner = new Html5QrcodeScanner(
   "render",
-  { fps: 10, qrbox: 250 },
+  {
+    fps: 10,
+    qrbox: 250,
+    supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+  },
   /* verbose= */ false
 );
 

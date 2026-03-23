@@ -1,5 +1,5 @@
 const { passwordCheck, usernameCheck, BadInputError } = require('../util/inputCheck.cjs');
-const supabase = require('../util/supabase.cjs');
+const supabase = require('../lib/supabase.cjs');
 
 async function validateRegistration(req, res, next) {
   const { username, password, confirmation } = req.body;

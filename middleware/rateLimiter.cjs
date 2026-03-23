@@ -1,8 +1,9 @@
 const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
-const { passwordIsCorrect } = require('../middleware/authentication.cjs');
+const { passwordIsCorrect } = require('./authentication.cjs');
 const { rateLimitedUserLog } = require('../util/formatLog.cjs');
+
 const { RedisStore } = require('rate-limit-redis');
-const redisClient = require('./redisClient.cjs');
+const redisClient = require('../lib/redisClient.cjs');
 
 const MINUTES = 15;
 

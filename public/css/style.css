@@ -4,10 +4,11 @@
   padding: 0;
 }
 
-body {
+html, body {
   font-family: Arial, Helvetica, sans-serif;
   background-color: #f4f4f4;
   color: #333;
+  overscroll-behavior: none;
 }
 
 button {
@@ -68,6 +69,9 @@ button {
   display: flex;
   width: 100%;
   height: 60px;
+  background-color: #1f2937;
+  /* background-color: #2563eb; */
+
 }
 .topbar .nav-link {
   display: inline-block;
@@ -83,9 +87,11 @@ button {
   border: none;
   font-size: 16px;
   font-size: 18px;
+  color: #f9fafb;
 }
 .topbar .nav-link button:hover {
-  background-color: #aaa;
+  background-color: #374151; 
+  color: #60a5fa;
 }
 
 .page-title {
@@ -474,6 +480,7 @@ form.editable input[type=text]:focus {
 .final-btn-container {
   text-align: center;
   margin-top: 15px;
+  margin-bottom: 40px;
 }
 #close-form-btn,
 #save-form-btn {

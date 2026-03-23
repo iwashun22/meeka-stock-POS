@@ -1,18 +1,11 @@
 const router = require('express').Router();
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const supabase = require('../util/supabase.cjs');
+const supabase = require('../lib/supabase.cjs');
 const bcrypt = require('bcrypt');
-const rateLimiter = require('../util/rateLimiter.cjs');
+const rateLimiter = require('../middleware/rateLimiter.cjs');
 const { loginAttemptFailedLog, loginSuccessLog } = require('../util/formatLog.cjs');
 
-// const loginLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minutes
-//   limit: 5,
-//   message: 'มีการพยายามเข้าสู่ระบบมากเกินไป กรุณาลองใหม่อีกครั้งในภายหลัง',
-//   skipSuccessfulRequests: true,
-//   requestWasSuccessful: passwordIsCorrect("password")
-// })
 
 passport.use(new LocalStrategy(async (username, password, done) => {
   const { data, error } = await supabase

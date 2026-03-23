@@ -1,4 +1,4 @@
-const supabase = require('../util/supabase.cjs');
+const supabase = require('../lib/supabase.cjs');
 const bcrypt = require('bcrypt');
 
 function requireAuth(req, res, next) {

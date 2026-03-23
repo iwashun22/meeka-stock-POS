@@ -1,4 +1,4 @@
-const supabase = require('../util/supabase.cjs');
+const supabase = require('../lib/supabase.cjs');
 const formatDate = require('../util/formatDate.cjs');
 const checkPriceFormat = require('../util/checkPriceFormat.cjs');
 

@@ -1,7 +1,7 @@
 extends layout 
 
 block content
-  h1(class="page-title kn-bold") สแกนรหัส
+  h1(class="page-title kn-bold") สแกนรหัสสินค้า
   form(action="/product/search", method="GET" class="search-form")
     div(class="search-bar")
       input(class="search-input" type="text" id="sku-id" name="sku_id" autocomplete="off" value=lastSearch || '')
@@ -40,13 +40,3 @@ block content
   if user && user.role === 'admin'
     a(href='/update/new/product')
       button(id="add-product-btn")
-      //- form(action="/update", method="POST")
-        input(type="hidden" name="id" value=data.id)
-        div
-          label(for="price") Update Price:
-          input(type="number" name="price" step="0.01" required)
-        div
-          label(for="count") Update Stock Count:
-          input(type="number" name="count" required)
-        div
-          button(type="submit") Update

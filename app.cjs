@@ -5,14 +5,14 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const helmet = require('helmet');
 
-const redisClient = require('./util/redisClient.cjs');
+const redisClient = require('./lib/redisClient.cjs');
 const { RedisStore } = require('connect-redis');
 
 if (process.env.NODE_ENV === "dev") {
   require('dotenv').config();
 }
 
-const rateLimiter = require('./util/rateLimiter.cjs');
+const rateLimiter = require('./middleware/rateLimiter.cjs');
 
 const redisStore = new RedisStore({
   client: redisClient
