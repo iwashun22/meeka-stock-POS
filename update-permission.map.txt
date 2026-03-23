@@ -4,4 +4,4 @@ edit product name ------> admin
 edit product price -----> admin
 edit product id <!!> ---> admin ?
 
-add new product --------> admin
+add new product --------> admin : todo

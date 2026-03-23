@@ -2,7 +2,7 @@ const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
 const { passwordIsCorrect } = require('../middleware/authentication.cjs');
 const { rateLimitedUserLog } = require('../util/formatLog.cjs');
 const { RedisStore } = require('rate-limit-redis');
-const { redisClient, connectRedis } = require('./redisClient.cjs');
+const redisClient = require('./redisClient.cjs');
 
 const MINUTES = 15;
 
@@ -57,9 +57,9 @@ const rateLimiter = rateLimit({
       .status(options.statusCode)
       .render('lock', { message: options.message });
   },
-  // store: new RedisStore({
-  //   sendCommand: () => (...args) => redisClient.sendCommand(args),
-  // })
+  store: new RedisStore({
+    sendCommand: (...args) => redisClient.sendCommand(args),
+  })
 });
 
 module.exports = rateLimiter;

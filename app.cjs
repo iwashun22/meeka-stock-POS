@@ -5,13 +5,14 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const helmet = require('helmet');
 
-const { redisClient, connectRedis } = require('./util/redisClient.cjs');
+const redisClient = require('./util/redisClient.cjs');
 const { RedisStore } = require('connect-redis');
 
-const dotenv = require('dotenv');
-dotenv.config();
+if (process.env.NODE_ENV === "dev") {
+  require('dotenv').config();
+}
 
-// const rateLimiter = require('./util/rateLimiter.cjs');
+const rateLimiter = require('./util/rateLimiter.cjs');
 
 const redisStore = new RedisStore({
   client: redisClient
@@ -38,9 +39,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.use(rateLimiter);
+app.use(rateLimiter);
 
-// TODO: In production, set trust proxy in order to make rate-limiter work
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1); // trust first proxy in the chain (Fly.io router)
+}
 
 app.set('view engine', 'pug');
 
@@ -60,17 +63,6 @@ app.use((req, res) => {
   res.status(404).render('notfound');
 });
 
-
-(async () => {
-
-  await connectRedis();
-
-  const rateLimiter = require('./util/rateLimiter.cjs');
-
-  app.use(rateLimiter);
-
-  app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
-  });
-
-})();
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
+});

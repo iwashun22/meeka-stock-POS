@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { requireAuth, passwordIsCorrect } = require('../middleware/authentication.cjs');
+const { requireAuth } = require('../middleware/authentication.cjs');
 const { passwordCheck, BadInputError } = require('../util/inputCheck.cjs');
 const getProductData = require('../middleware/getProductData.cjs');
 const { sum, subtract } = require('../util/mathOperator.cjs');
@@ -17,7 +17,7 @@ const {
   changeLocationLog,
   passwordResetAttemptFailedLog
 } = require('../util/formatLog.cjs');
-// const { rateLimit } = require('express-rate-limit');
+
 const rateLimiter = require('../util/rateLimiter.cjs');
 
 // const limiter = rateLimit({

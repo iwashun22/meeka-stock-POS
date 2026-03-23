@@ -3,8 +3,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const supabase = require('../util/supabase.cjs');
 const bcrypt = require('bcrypt');
-// const { passwordIsCorrect } = require('../middleware/authentication.cjs');
-// const { rateLimit } = require('express-rate-limit');
 const rateLimiter = require('../util/rateLimiter.cjs');
 const { loginAttemptFailedLog, loginSuccessLog } = require('../util/formatLog.cjs');
 
