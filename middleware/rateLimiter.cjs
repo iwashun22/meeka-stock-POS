@@ -44,15 +44,17 @@ const rateLimiter = rateLimit({
   },
   handler: async (req, res, next, options) => {
     const key = ipKeyGenerator(req.ip);
-    const { ipBlocked, logMessage } = await redisClient.json.get(key);
+    try {
+      const { ipBlocked, logMessage } = await redisClient.json.get(key);
 
-    if (!ipBlocked) {
-      rateLimitedUserLog(req, logMessage);
-      await setJsonWithTTL(key, {
-        ipBlocked: true,
-        logMessage
-      });
-    }
+      if (!ipBlocked) {
+        rateLimitedUserLog(req, logMessage);
+        await setJsonWithTTL(key, {
+          ipBlocked: true,
+          logMessage
+        });
+      }
+    } catch(err) {}
 
     return res
       .status(options.statusCode)

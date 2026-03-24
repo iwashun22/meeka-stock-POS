@@ -13,7 +13,7 @@ const HOURS = 8;
 const registerLimiter = rateLimit({
   windowMs: HOURS * 60 * 60 * 1000, // 8 hours
   max: 3,
-  message: 'มีความพยายามลงทะเบียนมากเกินไป กรุณาลองใหม่ในภายหลัง',
+  message: 'มีการลงทะเบียนมากเกินไป กรุณาลองใหม่ในภายหลัง',
   store: new RedisStore({
     sendCommand: (...args) => redisClient.sendCommand(args),
     prefix: 'register:'
@@ -31,11 +31,11 @@ const registerLimiter = rateLimit({
 
     return res
       .status(options.statusCode)
-      .render('lock', { message: options.message });
+      .render('lock', { message: options.message, accessible: true });
   }
 });
 
-router.get('/', (req, res) => {
+router.get('/', registerLimiter, (req, res) => {
   if(req.isAuthenticated()) {
     return res.redirect('/');
   }

@@ -28,6 +28,34 @@ button {
   background-color: #2e6aca;
 }
 
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lock-message {
+  margin: 40px 20px 0;
+  font-size: 24px;
+  text-align: center;
+}
+.back-to-home-link {
+  display: inline-block;
+  margin: 40px auto;
+}
+.back-to-home-link button {
+  line-height: 1;
+  padding: 10px 12px;
+  background-color: #2563eb;;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+}
+.back-to-home-link button:hover {
+  background-color: #1d4ed8;
+}
+
 #alert-container {
   position: fixed;
   top: 20px;
