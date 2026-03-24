@@ -8,7 +8,9 @@ const helmet = require('helmet');
 const redisClient = require('./lib/redisClient.cjs');
 const { RedisStore } = require('connect-redis');
 
-if (process.env.NODE_ENV === "dev") {
+const isDev = process.env.NODE_ENV === "dev";
+const isProd = process.env.NODE_ENV === "production";
+if (isDev) {
   require('dotenv').config();
 }
 
@@ -21,7 +23,9 @@ const redisStore = new RedisStore({
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public', { maxAge: 0 /* only in development */ }));
+app.use(express.static('public', {
+  maxAge: isDev ? 0 : '1d'
+}));
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(helmet());
@@ -41,7 +45,7 @@ app.use(passport.session());
 
 app.use(rateLimiter);
 
-if (process.env.NODE_ENV === "production") {
+if (isProd) {
   app.set("trust proxy", 1); // trust first proxy in the chain (Fly.io router)
 }
 
@@ -65,12 +69,6 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-if (process.env.NODE_ENV === "production") {
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-} else {
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-}
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server is running on port ${PORT}`);
+});
