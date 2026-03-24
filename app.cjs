@@ -24,7 +24,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public', {
-  maxAge: isDev ? 0 : '1d'
+  maxAge: isDev ? 0 : '10d'
 }));
 app.use(morgan('dev'));
 app.use(cookieParser());
