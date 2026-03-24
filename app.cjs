@@ -9,7 +9,6 @@ const redisClient = require('./lib/redisClient.cjs');
 const { RedisStore } = require('connect-redis');
 
 const isDev = process.env.NODE_ENV === "dev";
-const isProd = process.env.NODE_ENV === "production";
 if (isDev) {
   require('dotenv').config();
 }
@@ -35,7 +34,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    secure: isProd, // true in production with HTTPS
+    secure: !isDev, // true in production with HTTPS
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 2 // 2 hours
   }
@@ -45,7 +44,7 @@ app.use(passport.session());
 
 app.use(rateLimiter);
 
-if (isProd) {
+if (!isDev) {
   app.set("trust proxy", 1); // trust first proxy in the chain (Fly.io router)
 }
 
