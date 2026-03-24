@@ -45,7 +45,7 @@ app.use(passport.session());
 app.use(rateLimiter);
 
 if (!isDev) {
-  app.set("trust proxy", 1); // trust first proxy in the chain (Fly.io router)
+  app.set("trust proxy", true); // trust proxy chain (Fly.io router)
 }
 
 app.set('view engine', 'pug');

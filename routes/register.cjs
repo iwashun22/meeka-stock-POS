@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const validateRegistration = require('../middleware/validateRegistration.cjs');
 const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
 const passport = require('passport');
-const { registrationRestrictedLog } = require('../util/formatLog.cjs');
+const { registrationRestrictedLog, registeredUserLog } = require('../util/formatLog.cjs');
 
 const redisClient = require('../lib/redisClient.cjs');
 const { RedisStore } = require('rate-limit-redis');
@@ -51,6 +51,7 @@ router.post('/', validateRegistration, registerLimiter, async (req, res, next) =
     username,
     hashed_password: hashedPassword
   });
+  registeredUserLog(req);
 
   next();
 },

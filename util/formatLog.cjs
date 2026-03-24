@@ -84,6 +84,10 @@ const registrationRestrictedLog = userAuthLog("REGISTRATION_RESTRICTED", "error"
   (req) => `Registration restricted for IP ${req.ip} (reason: too_many_registrations)`
 );
 
+const registeredUserLog = userAuthLog("NEW_REGISTRATION", "info",
+  (req, _r) => `Registration successful for ${req.body.username} from IP ${req.ip}`
+);
+
 module.exports = {
   sellLog,
   addLog,
@@ -94,5 +98,6 @@ module.exports = {
   loginSuccessLog,
   passwordResetAttemptFailedLog,
   rateLimitedUserLog,
-  registrationRestrictedLog
+  registrationRestrictedLog,
+  registeredUserLog,
 };
