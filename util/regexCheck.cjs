@@ -8,7 +8,13 @@ function validPasswordInput(input) {
   return regex.test(input);
 }
 
+function hasSpace(input) {
+  const regex = /\s/;
+  return regex.test(input);
+}
+
 module.exports = {
   validUsernameInput,
   validPasswordInput,
+  hasSpace
 }

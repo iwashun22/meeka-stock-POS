@@ -1,4 +1,4 @@
-const { validPasswordInput, validUsernameInput } = require('./regexCheck.cjs');
+const { validPasswordInput, validUsernameInput, hasSpace } = require('./regexCheck.cjs');
 // const bcrypt = require('bcrypt');
 
 /**
@@ -9,6 +9,12 @@ const { validPasswordInput, validUsernameInput } = require('./regexCheck.cjs');
  */
 function usernameCheck(username) {
   if (!validUsernameInput(username.text)) {
+    if (hasSpace(username.text)) {
+      throw new BadInputError(
+        username.field,
+        'กรุณาอย่าเว้นวรรคหรือพิมพ์ช่องว่าง'
+      );
+    }
     throw new BadInputError(
       username.field,
       'ชื่อผู้ใช้ต้องประกอบด้วย ตัวอักษรภาษาอังกฤษ และตัวเลขเท่านั้น'
@@ -37,6 +43,12 @@ function passwordCheck(passwords) {
   const { password, confirmation, oldPassword } = passwords;
 
   if (!validPasswordInput(password.text)) {
+    if (hasSpace(password.text)) {
+      throw new BadInputError(
+        password.field,
+        'กรุณาอย่าเว้นวรรคหรือพิมพ์ช่องว่าง'
+      );
+    }
     throw new BadInputError(
       password.field,
       'รหัสผ่านต้องประกอบด้วย ตัวอักษรภาษาอังกฤษ ตัวเลข หรืออักขระพิเศษ !@#$%^&*()_+-="\'/ เท่านั้น'

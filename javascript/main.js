@@ -3,6 +3,7 @@ import scanIcon from '../icons/scan-line.svg';
 import plusIcon from '../icons/plus.svg';
 import { convertSVGToDOMNode } from './convertSVG';
 import { startScanner } from './readQRCode';
+import ignoreSpaceKeyRegistrationInput from './ignoreSpaceKey';
 import loadPasswordToggle from './loadPasswordToggle';
 import { addSellEvent } from './updateProductForm';
 import loadAlertMessage from './loadAlertMessage';
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  ignoreSpaceKeyRegistrationInput();
   loadPasswordToggle();
 
   const addProductBtn = document.getElementById('add-product-btn');
