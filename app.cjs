@@ -21,9 +21,21 @@ const redisStore = new RedisStore({
 
 const app = express();
 
+// make hashed filename accissible to locals
+const { readFileSync } = require('fs');
+const path = require('path');
+const assets = JSON.parse(readFileSync(
+  path.resolve(__dirname, 'public/dist/manifest.json')
+));
+
+app.locals.getAsset = (filename) => path.resolve('/dist', assets[filename]);
+
+
+// configure middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public', {
-  maxAge: isDev ? 0 : '10d'
+  maxAge: isDev ? 0 : '30d',
+  immutable: !isDev
 }));
 app.use(morgan('dev'));
 app.use(cookieParser());

@@ -7,7 +7,7 @@ html(lang="th")
     link(rel="stylesheet", href="/css/style.css")
     link(rel="stylesheet", href="/css/loadfonts.css")
     link(rel="icon", href="/favicon.ico")
-    script(src="/dist/bundle.js" defer)
+    script(src=getAsset("main.js") defer)
   body
     div(id="alert-container")
       if messages
