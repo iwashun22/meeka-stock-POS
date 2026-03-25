@@ -135,7 +135,7 @@ router.post('/stock/:id',
     return res.status(500).send("Error updating stock");
   }
 
-  logfn(user, productData, ["stock", updatedStock], quantity);
+  logfn(req, ["stock", updatedStock], quantity);
 
   setAlertMessages(req, [
     ['แก้ไขข้อมูลสำเร็จ']
@@ -152,7 +152,6 @@ router.post('/change/:id',
 {
   const { on, new_value } = req.body;
   const { id } = req.params;
-  const { user, productData } = req;
 
   if (!new_value) return res.status(400).send('Bad request');
   
@@ -169,7 +168,7 @@ router.post('/change/:id',
         return res.status(500).send('Error renaming the product');
       }
 
-      changeNameLog(user, productData, ["name", new_value]);
+      changeNameLog(req, ["name", new_value]);
       break;
 
 
@@ -183,7 +182,7 @@ router.post('/change/:id',
         return res.status(500).send('Error relocating the product');
       }
 
-      changeLocationLog(user, productData, ["location", new_value]);
+      changeLocationLog(req, ["location", new_value]);
       break;
 
 
@@ -202,7 +201,7 @@ router.post('/change/:id',
         res.status(500).send('Error updating selling_price');
       }
 
-      changePriceLog(user, productData, ["selling_price", valid_value]);
+      changePriceLog(req, ["selling_price", valid_value]);
       break;
     default:
       return res.send(400).send('Bad request');

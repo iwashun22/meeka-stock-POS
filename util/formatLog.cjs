@@ -1,6 +1,7 @@
 const logger = require('../lib/logger.cjs');
 
-const formatLog = (event, messageFormatCallback) => (user, productData, [updateKey, updateValue], quantity = null) => {
+const formatLog = (event, messageFormatCallback) => (req, [updateKey, updateValue], quantity = null) => {
+  const { user, productData } = req;
   const { sku_id, updated_at, ...data } = productData;
 
   if (!updateKey in productData) throw new Error(`The column name ${updateKey} does not exist.`);
@@ -21,7 +22,8 @@ const formatLog = (event, messageFormatCallback) => (user, productData, [updateK
         old: oldValue,
         new: updateValue
       }
-    }
+    },
+    ip: req.ip
   });
 
   logger.flush();
