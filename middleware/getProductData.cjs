@@ -1,6 +1,7 @@
 const supabase = require('../lib/supabase.cjs');
 const formatDate = require('../util/formatDate.cjs');
 const checkPriceFormat = require('../util/checkPriceFormat.cjs');
+const { setAlertMessages } = require('../util/alertMessage.cjs');
 
 async function getProductData(req, res, next) {
   const { id } = req.params;
@@ -16,11 +17,15 @@ async function getProductData(req, res, next) {
       return res.status(404).render('search', { user: req.user, data: null, notFound: true, lastSearch: id });
     }
     console.error('Error fetching product:', error);
-    return res.status(500).send('Internal Server Error');
+    setAlertMessages(req, [
+      ["เกิดข้อผิดพลาด", "error"]
+    ]);
+    return res.status(500).redirect('/');
   }
 
   req.productData = {
     ...productData,
+    location: productData.location || '',
     updated_at: formatDate(productData.updated_at),
     selling_price: checkPriceFormat(productData.selling_price),
     cost_price: checkPriceFormat(productData.cost_price),

@@ -8,7 +8,7 @@ const checkRole = require('../util/checkRole.cjs');
 const checkPriceFormat = require('../util/checkPriceFormat.cjs');
 const supabase = require('../lib/supabase.cjs');
 const bcrypt = require('bcrypt');
-const { setAlertMessages } = require('../util/alertMessage.cjs');
+const { setAlertMessages, getAlertMessages } = require('../util/alertMessage.cjs');
 const {
   sellLog,
   addLog,
@@ -23,8 +23,9 @@ const rateLimiter = require('../middleware/rateLimiter.cjs');
 
 router.get('/:id', requireAuth, getProductData, (req, res) => {
   const { user, productData } = req;
+  const messages = getAlertMessages(req);
 
-  res.render('update', { user: user, data: productData });
+  res.render('update', { user: user, data: productData, messages });
 });
 
 router.get('/user/password', requireAuth, (req, res) => {
@@ -153,8 +154,13 @@ router.post('/change/:id',
   const { on, new_value } = req.body;
   const { id } = req.params;
 
-  if (!new_value) return res.status(400).send('Bad request');
-  
+  if (!new_value && on !== 'product_location') {
+    setAlertMessages(req, [
+      ["กรุณาใส่ข้อมูล", "error"]
+    ]);
+    return res.status(400).redirect(`/update/${id}`);
+  }
+
   const timestamp = new Date().toISOString();
 
   switch (on) {
@@ -179,7 +185,10 @@ router.post('/change/:id',
         .eq("sku_id", id);
 
       if (relocateErr) {
-        return res.status(500).send('Error relocating the product');
+        setAlertMessages(req, [
+          ["เกิดข้อผิดพลาด", "error"]
+        ])
+        return res.status(500).redirect(`/update/${id}`);
       }
 
       changeLocationLog(req, ["location", new_value]);

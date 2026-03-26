@@ -30,12 +30,13 @@ block content
         if user.role === "admin"
           form(id="edit-product-location" class="editable" action=`/update/change/${data.sku_id}` method="POST")
             input(type="hidden" name="on" value="product_location")
-            input(type="text" name="new_value" autocomplete="off")
+            textarea(name="new_value")
             div(class="editable-btn-container")
               button(class="cancel-editable kn-reg" type="button") ยกเลิก
               button(class="submit-editable kn-reg" type="submit") บันทึก
         div(class="table-data-wrapper")
-          span #{data.location}
+          for location in data.location.split("\n")
+            span #{location}
           if user.role === "admin"
             div(class="editable-btn-container")
               button(class="admin-edit-btn kn-reg" data-html-for="edit-product-location" data-input-value=`${data.location || ''}`) แก้ไข

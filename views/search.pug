@@ -22,7 +22,8 @@ block content
         tr
           th ที่เก็บ
           td
-            span #{data.location}
+            for location in data.location.split("\n")
+              div #{location}
       tr
         th จำนวน
         td(id="product-stock") #{data.stock}

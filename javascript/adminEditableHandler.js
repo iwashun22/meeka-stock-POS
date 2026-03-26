@@ -14,7 +14,7 @@ export default function handleEditableForm() {
 
     if (!targetForm) return;
     const closeFormBtn = targetForm.querySelector(".cancel-editable");
-    const inputElement = targetForm.querySelector("input[type=text]");
+    const inputElement = targetForm.querySelector("input[type=text]") || targetForm.querySelector("textarea");
 
     const restoreDefault = () => {
       if (inputElement) {

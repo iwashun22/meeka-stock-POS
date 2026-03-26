@@ -78,6 +78,9 @@ button {
 .message-box.success {
   background-color: #22C55E;
 }
+.message-box.error {
+  background-color: #C62828;
+}
 .message-box.show {
   display: flex;
 }
@@ -354,7 +357,7 @@ form.editable {
   display: flex;
   flex-direction: column;
 }
-form.editable input[type=text] {
+form.editable input[type=text], form.editable textarea {
   max-width: 300px;
   line-height: 30px;
   height: 30px;
@@ -362,7 +365,11 @@ form.editable input[type=text] {
   border-radius: 10px;
   border: 2px black solid;
 }
-form.editable input[type=text]:focus {
+form.editable textarea {
+  height: 70px;
+  resize: none;
+}
+form.editable input[type=text]:focus, form.editable textarea:focus {
   outline: none;
   border-color: #8B5CF6;
 }
