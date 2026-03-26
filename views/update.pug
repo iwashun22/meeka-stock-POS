@@ -15,7 +15,7 @@ block content
         div(class="table-data-wrapper")
           span #{data.name}
     tr(class="model-row")
-      th รุ่น
+      th ชื่อรุ่น
       td(id="product-model")
         if user.role === "admin"
           form(id="edit-product-model" class="editable" action=`/update/change/${data.sku_id}` method="POST")
