@@ -7,8 +7,9 @@ const formatLog = (event, messageFormatCallback) => (req, [updateKey, updateValu
   if (!updateKey in productData) throw new Error(`The column name ${updateKey} does not exist.`);
   const oldValue = productData[updateKey];
 
+  const productName = `${productData.name} ${productData.model}`;
   const formatted = messageFormatCallback(
-    data.name, oldValue, updateValue, quantity
+    productName, oldValue, updateValue, quantity
   );
 
   logger.info(formatted, {

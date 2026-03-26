@@ -8,7 +8,7 @@ async function getProductData(req, res, next) {
 
   const { data: productData, error } = await supabase
     .from('stocks')
-    .select('*')
+    .select('*, parts(*)')
     .eq('sku_id', id)
     .single();
 
@@ -25,6 +25,7 @@ async function getProductData(req, res, next) {
 
   req.productData = {
     ...productData,
+    name: productData.parts.part_name || '',
     location: productData.location || '',
     updated_at: formatDate(productData.updated_at),
     selling_price: checkPriceFormat(productData.selling_price),

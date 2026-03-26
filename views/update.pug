@@ -10,20 +10,25 @@ block content
         div(class="table-data-wrapper")
           span #{data.sku_id}
     tr(class="name-row")
-      th สินค้า
-      td(id="product-name")
+      th อะไหล่
+      td
+        div(class="table-data-wrapper")
+          span #{data.name}
+    tr(class="model-row")
+      th รุ่น
+      td(id="product-model")
         if user.role === "admin"
-          form(id="edit-product-name" class="editable" action=`/update/change/${data.sku_id}` method="POST")
-            input(type="hidden" name="on" value="product_name")
+          form(id="edit-product-model" class="editable" action=`/update/change/${data.sku_id}` method="POST")
+            input(type="hidden" name="on" value="product_model")
             input(type="text" name="new_value" autocomplete="off")
             div(class="editable-btn-container")
               button(class="cancel-editable kn-reg" type="button") ยกเลิก
               button(class="submit-editable kn-reg" type="submit") บันทึก
         div(class="table-data-wrapper")
-          span #{data.name}
+          span #{data.model}
           if user.role === "admin"
             div(class="editable-btn-container")
-              button(class="admin-edit-btn kn-reg" data-html-for="edit-product-name" data-input-value=data.name) แก้ไข
+              button(class="admin-edit-btn kn-reg" data-html-for="edit-product-model" data-input-value=data.model) แก้ไข
     tr
       th ที่เก็บ
       td(id="product-location")
@@ -83,7 +88,7 @@ block content
         table(id="result-table")
           tr
             th(class="kn-reg") จาก
-            td(colspan=2) #{data.stock}
+            td(class="right" colspan=2) #{data.stock}
           tr
             th(class="kn-reg" id="table-header-action-name") ขาย
             td
@@ -95,16 +100,8 @@ block content
             td(id="sell-total-price" data-selling-price=`${data.selling_price}`)
           tr
             th(class="kn-bold") คงเหลือ
-            td(id="table-data-final-quantity" colspan=2) 11
+            td(id="table-data-final-quantity" class="right" colspan=2) 11
         tr
         div(class="final-btn-container")
           button(class="kn-reg" type="button" id="close-form-btn") ยกเลิก
           button(class="kn-reg" type="submit" id="save-form-btn") บันทึก
-
-
-    //- if user.roles.name === 'employee'
-    //-   p you are an employee
-    //- else if user.roles.name === 'manager'
-    //-   p you are a manager
-    //- else if user.roles.name === 'admin'
-    //-   p you are an admin

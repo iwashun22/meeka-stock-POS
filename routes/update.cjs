@@ -164,17 +164,17 @@ router.post('/change/:id',
   const timestamp = new Date().toISOString();
 
   switch (on) {
-    case 'product_name':
+    case 'product_model':
       const { error: renameErr } = await supabase
         .from("stocks")
-        .update({ name: new_value, updated_at: timestamp })
+        .update({ model: new_value, updated_at: timestamp })
         .eq("sku_id", id);
 
       if (renameErr) {
         return res.status(500).send('Error renaming the product');
       }
 
-      changeNameLog(req, ["name", new_value]);
+      changeNameLog(req, ["model", new_value]);
       break;
 
 

@@ -15,9 +15,13 @@ block content
   if data
     table(class="product-table pp-reg")
       tr(class="name-row")
-        th สินค้า
+        th อะไหล่
         td(id="product-name")
           span #{data.name}
+      tr(class="model-row")
+        th รุ่น
+        td
+          span #{data.model}
       if user && user.role
         tr
           th ที่เก็บ

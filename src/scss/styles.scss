@@ -365,7 +365,7 @@ a.bottom-link {
     font-size: 16px;
   }
 
-  .name-row td {
+  .model-row td {
     font-size: 20px;
   }
 
@@ -506,6 +506,10 @@ form.editable textarea {
 
   td, tr {
     padding: 5px;
+
+    &.right {
+      text-align: right;
+    }
   }
   th {
     padding-right: 20px;
