@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY . .
+COPY src ./src
 RUN npm run bundle
 
 # Production stage
@@ -15,7 +15,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
 
-COPY icons ./icons
 COPY lib ./lib
 COPY middleware ./middleware
 COPY public ./public
