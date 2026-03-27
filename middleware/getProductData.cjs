@@ -14,7 +14,6 @@ async function getProductData(req, res, next) {
 
   if (error) {
     if (error.code === 'PGRST116') {
-      // return res.status(404).render('search', { user: req.user, data: null, notFound: true, lastSearch: id });
       req.productData = null;
       return next();
     }
