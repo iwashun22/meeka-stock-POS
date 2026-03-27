@@ -16,7 +16,7 @@ block content
     each item in allMatchingData
       div(class="parts-container-card")
         h3(class="card-title kn-bold") #{item[0]}
-        div(class="flex-container")
+        div(class="flex-container btns-container")
           for product in item[1]
             a(href=`/product/info/${product.sku_id}`)
               button(class="card-btn kn-reg") #{product.model}

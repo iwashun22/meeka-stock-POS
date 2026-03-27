@@ -12,16 +12,21 @@
     margin-bottom: 12px;
   }
 
-  .card-btn {
-    line-height: 1;
-    padding: 8px 16px;
-    background-color: #d0f0ff;
-    color: #0077cc;
-    border: none;
-    border-radius: 6px;
+  .btns-container {
+    flex-wrap: wrap;
+    gap: 10px;
 
-    &:hover {
-      background-color: #b0e0ff;
-    }
+    .card-btn {
+      line-height: 1;
+      padding: 8px 16px;
+      background-color: #d0f0ff;
+      color: #0077cc;
+      border: none;
+      border-radius: 6px;
+
+      &:hover {
+        background-color: #b0e0ff;
+      }
+  }
   }
 }
