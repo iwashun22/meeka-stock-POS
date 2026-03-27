@@ -60,12 +60,16 @@ async function allMatched(req, res, next) {
         return null;
       }
 
-      arr.push(data);
+      arr.push(data.map(d => {
+        return {
+          ...d,
+          is_genuine: (/.+-G-.+/gi).test(d.sku_id)
+        }
+      }));
       return arr;
     })
   )).filter(Boolean);
 
-  console.log(allMatchingData);
   req.allMatchingData = allMatchingData;
   next();
 }

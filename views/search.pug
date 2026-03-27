@@ -19,7 +19,10 @@ block content
         div(class="flex-container btns-container")
           for product in item[1]
             a(href=`/product/info/${product.sku_id}`)
-              button(class="card-btn kn-reg") #{product.model}
+              button(class={
+                "card-btn kn-reg": true,
+                "genuine": product.is_genuine
+              }) #{product.model}
 
   if data
     table(class="product-table pp-reg")

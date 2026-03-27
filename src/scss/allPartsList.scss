@@ -24,6 +24,20 @@
       border: none;
       border-radius: 6px;
 
+      &.genuine {
+        background: linear-gradient(
+          135deg,
+          #111 0%,
+          #1a1a1a 40%,
+          #111 100%
+        );
+        color: #f5c542;
+        text-shadow:
+          0 0 4px rgba(245, 197, 66, 0.6),
+          0 0 8px rgba(245, 197, 66, 0.4);
+        box-shadow: 0 2px 6px rgba(245, 197, 66, 0.3);
+      }
+
       &:hover {
         background-color: #b0e0ff;
       }
