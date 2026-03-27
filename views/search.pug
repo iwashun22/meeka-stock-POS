@@ -21,7 +21,7 @@ block content
             a(href=`/product/info/${product.sku_id}`)
               button(class={
                 "card-btn kn-reg": true,
-                "genuine": product.is_genuine
+                "genuine": !product.is_genuine
               }) #{product.model}
 
   if data
