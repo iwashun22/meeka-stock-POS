@@ -12,6 +12,15 @@ block content
   if notFound
     p(class="not-found-text") ไม่พบสินค้า
 
+  if allMatchingData
+    each item in allMatchingData
+      div(class="parts-container-card")
+        h3(class="card-title kn-bold") #{item[0]}
+        div(class="flex-container")
+          for product in item[1]
+            a(href=`/product/info/${product.sku_id}`)
+              button(class="card-btn kn-reg") #{product.model}
+
   if data
     table(class="product-table pp-reg")
       tr(class="name-row")

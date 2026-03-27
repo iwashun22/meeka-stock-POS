@@ -14,7 +14,9 @@ async function getProductData(req, res, next) {
 
   if (error) {
     if (error.code === 'PGRST116') {
-      return res.status(404).render('search', { user: req.user, data: null, notFound: true, lastSearch: id });
+      // return res.status(404).render('search', { user: req.user, data: null, notFound: true, lastSearch: id });
+      req.productData = null;
+      return next();
     }
     console.error('Error fetching product:', error);
     setAlertMessages(req, [
@@ -34,4 +36,40 @@ async function getProductData(req, res, next) {
   next();
 }
 
+async function allMatched(req, res, next) {
+  const q = req.query.q;
+
+  const parts = await supabase
+    .from("parts")
+    .select("*")
+    .ilike("part_name", `%${q}%`)
+    .order("part_name", { ascending: true })
+    .limit(5);
+
+  if (!parts.data || !parts.data.length) return next();
+
+  const allMatchingData = (await Promise.all(
+    parts.data.map(async (part) => {
+      const arr = [part.part_name];
+      const { data, error } = await supabase
+        .from("stocks")
+        .select("*")
+        .eq("part_id", part.part_id)
+        .order("model", { ascending: true });
+
+      if (!data || !data.length) {
+        return null;
+      }
+
+      arr.push(data);
+      return arr;
+    })
+  )).filter(Boolean);
+
+  console.log(allMatchingData);
+  req.allMatchingData = allMatchingData;
+  next();
+}
+
 module.exports = getProductData;
+module.exports.allMatched = allMatched;

@@ -11,6 +11,7 @@ import handleEditableForm from './adminEditableHandler';
 
 import "../scss/loadfonts.scss";
 import "../scss/styles.scss";
+import "../scss/allPartsList.scss";
 
 const scanIconElement = convertSVGToDOMNode(scanIcon, 26, 26);
 const plusIconElement = convertSVGToDOMNode(plusIcon, 32, 32);
