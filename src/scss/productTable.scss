@@ -1,0 +1,280 @@
+.product-table {
+  width: 90%;
+  max-width: 800px;
+  margin: auto;
+
+  tr:nth-child(odd) {
+    background-color: #dddee0;
+  }
+
+  th {
+    font-weight: bold;
+    font-size: 14px;
+    padding: 10px;
+  }
+  td {
+    padding: 10px 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+  }
+
+  .model-row td {
+    font-size: 20px;
+
+    .name-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .model {
+        font-family: "Times New Roman", Times, serif;
+        font-weight: bold;
+      }
+      .tag {
+        cursor: default;
+        user-select: none;
+        margin-left: 14px;
+        border: 2px;
+        padding: 2px 10px;
+        background-color: orange;
+        color: #fff;
+        font-size: 14px;
+        background-color: #d0f0ff;
+        color: #0077cc;
+        border-radius: 6px;
+
+        &.genuine {
+          background: linear-gradient(
+            135deg,
+            #111 0%,
+            #1a1a1a 40%,
+            #111 100%
+          );
+          color: #f5c542;
+          text-shadow:
+            0 0 4px rgba(245, 197, 66, 0.6),
+            0 0 8px rgba(245, 197, 66, 0.4);
+          box-shadow: 0 2px 6px rgba(245, 197, 66, 0.3);
+        }
+      }
+    }
+  }
+
+  .product-id {
+    font-family: monospace;
+  }
+}
+
+
+form.editable {
+  display: none;
+}
+.table-data-wrapper, form.editable.show {
+  display: flex;
+  flex-direction: column;
+}
+form.editable input[type=text], form.editable textarea {
+  max-width: 300px;
+  line-height: 30px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 2px black solid;
+
+  &:focus {
+    outline: none;
+    border-color: #8B5CF6;
+  }
+}
+form.editable textarea {
+  height: 70px;
+  resize: none;
+}
+.editable-btn-container {
+  margin-top: 8px;
+  text-align: end;
+
+  button {
+    padding: 4px 6px;
+    line-height: 1;
+    margin-left: 5px;
+    border-radius: 6px;
+    border: 2px transparent solid;
+  }
+  .cancel-editable {
+    color: #333;
+    background-color: transparent;
+    border-color: #333;
+  }
+  .submit-editable {
+    color: #fff;
+    border-color: #16A34A;
+    background-color: #16A34A;
+  }
+}
+
+.update-link-container {
+  margin: 40px auto 0;
+  width: 90%;
+  max-width: 800px;
+  text-align: end;
+}
+.update-link {
+  padding: 14px 20px;
+  margin-right: 20px;
+  border-radius: 8px;
+  border: 2px #2E54FF solid;
+  background-color: transparent;
+  color: #2E54FF;
+
+  &:hover {
+    background-color: #2E54FF;
+    color: #fff;
+  }
+}
+
+
+.updated-at {
+  font-size: 14px;
+  color: #666;
+  padding: 10px;
+  text-align: right;
+  width: 90%;
+  max-width: 800px;
+  border-top: 1px solid #ccc;
+  margin: auto;
+}
+.not-permitted {
+  margin-top: 50px;
+  color: #CF3115;
+  text-align: center;
+  font-size: 18px;
+}
+
+.admin-edit-btn {
+  float: right;
+  background-color: transparent;
+  border: none;
+  color: blue;
+
+  &:hover {
+    color: darkblue;
+  }
+}
+
+.action-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 15px;
+}
+#sell-stock-btn, #add-stock-btn {
+  padding: 20px 20px;
+  border: none;
+  margin: 0 5px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+#sell-stock-btn {
+  background-color: #FEE7E7; color: #9C0707;
+  &:hover {
+    background-color: #F86363;
+  }
+}
+#add-stock-btn {
+  background-color: #E7F8FE; color: #073B9C;
+  &:hover {
+    background-color: #6397F8;
+  }
+}
+#update-stock-form {
+  display: none;
+}
+
+#result-table {
+  border-bottom: 1px black dashed;
+
+  td, tr {
+    padding: 5px;
+
+    &.right {
+      text-align: right;
+    }
+  }
+  th {
+    padding-right: 20px;
+    font-weight: 300;
+  }
+
+  tr:nth-child(2) td, tr:nth-child(2) th {
+    border-bottom: 1px black dashed;
+  }
+
+  input {
+    text-align: right;
+  }
+
+  &.sell #table-data-final-quantity { color: #C80909; }
+  &.add #table-data-final-quantity { color: #079C2F; }
+
+  &.sell #update-quantity:focus { background-color: #FCC6BB; }
+  &.add #update-quantity:focus { background-color: #C2FCBB; }
+}
+#table-data-final-quantity {
+  font-weight: bold;
+}
+#sell-total-price {
+  padding-left: 20px !important;
+}
+
+
+#update-quantity {
+  padding: 4px 8px;
+  font-size: 18px;
+  width: 80px;
+  border-radius: 10px;
+  border: 1px transparent solid;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+#decrement, #increment {
+  border: none;
+  border-radius: 50%;
+  padding: 5px;
+  background-color: #E5E4E2;
+
+  &:hover {
+    background-color: #C0C0C0;
+  }
+}
+
+.final-btn-container {
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 40px;
+}
+#close-form-btn,
+#save-form-btn {
+  padding: 14px 20px;
+  border: 2px #000 solid;
+  margin: 0 10px;
+  border-radius: 6px;
+}
+#close-form-btn {
+  background-color: #000;
+  color: #eee;
+  &:hover {
+    background-color: #333;
+  }
+}
+#save-form-btn {
+  background-color: #eee;
+  color: #000;
+  &:hover {
+    background-color: #c7c7c7;
+  }
+}

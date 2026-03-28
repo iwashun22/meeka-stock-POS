@@ -33,7 +33,12 @@ block content
       tr(class="model-row")
         th ชื่อรุ่น
         td
-          span #{data.model}
+          div(class="name-container")
+            span(class="model") #{data.model}
+            span(class={
+              "tag kn-light": true,
+              "genuine": data.is_genuine
+            }) #{data.is_genuine ? "แท้" : "เทียม" }
       if user && user.role
         tr
           th ที่เก็บ
