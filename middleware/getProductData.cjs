@@ -31,6 +31,7 @@ async function getProductData(req, res, next) {
     updated_at: formatDate(productData.updated_at),
     selling_price: checkPriceFormat(productData.selling_price),
     cost_price: checkPriceFormat(productData.cost_price),
+    is_genuine: (/.+-G-.+/gi).test(productData.sku_id)
   };
   next();
 }
