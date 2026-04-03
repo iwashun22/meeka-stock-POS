@@ -28,7 +28,7 @@ block content
           div(class="name-container")
             span(class="model") #{data.model}
             span(class={
-              "tag kn-reg": true,
+              "tag kn-bold": true,
               "genuine": data.is_genuine
             }) #{data.is_genuine ? "แท้" : "เทียม" }
           if user.role === "admin"
