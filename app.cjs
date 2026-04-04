@@ -44,7 +44,7 @@ app.use(session({
   store: redisStore,
   secret: process.env.SESSION_SECRET || 'hiding cat',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     secure: !isDev, // true in production with HTTPS
     httpOnly: true,
