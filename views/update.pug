@@ -99,13 +99,13 @@ block content
             td
               button(id="decrement" type="button")
             td
-              input(id="update-quantity" type="text" name="quantity" value="1" inputmode="numeric")
+              input(id="update-quantity" type="text" name="quantity" value="1" inputmode="numeric" autocomplete="off")
             td
               button(id="increment" type="button")
             td(id="sell-total-price" data-selling-price=`${data.selling_price}`)
           tr
             th(class="kn-bold") คงเหลือ
-            td(id="table-data-final-quantity" class="right" colspan=2) 11
+            td(id="table-data-final-quantity" class="right" colspan=2)
         tr
         div(class="final-btn-container")
           button(class="kn-reg" type="button" id="close-form-btn") ยกเลิก

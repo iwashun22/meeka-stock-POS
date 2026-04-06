@@ -149,5 +149,8 @@ function updateSellTotalPrice(quantity, actionName) {
   const price = sellTotalPrice.dataset.sellingPrice;
 
   const totalPrice = (Number(quantity) * Number(price)).toFixed(2);
-  sellTotalPrice.innerText = `${totalPrice} ฿`;
+  const commaSeparated = totalPrice.split('.')
+    .map((n, i) => i === 0 ? Number(n).toLocaleString() : n)
+    .join('.');
+  sellTotalPrice.innerText = `${commaSeparated} ฿`;
 }
