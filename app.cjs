@@ -29,6 +29,10 @@ const assets = JSON.parse(readFileSync(
 ));
 
 app.locals.getAsset = (filename) => path.resolve('/dist', assets[filename]);
+app.locals.commaSeparator = (str) => {
+  const n = str.split('.');
+  return Number(n[0]).toLocaleString() + '.' + n[1];
+}
 
 
 // configure middleware
